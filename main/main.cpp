@@ -1,6 +1,8 @@
 #include "../include/snippets.h"  //ALWAYS ADD THIS
 using namespace std;
 int main() {
-    print("test");
+    string name, number;
+    
+
     return 0;
 }
