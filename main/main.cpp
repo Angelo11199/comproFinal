@@ -6,11 +6,17 @@ using namespace std;
 #include <vector>
 
 using namespace std;
+#include <cstdlib>  // Include the <cstdlib> header file for system("cls")
+
 void printIntro() {
     print("----------------------------------------------");
     print("|| Welcome to the Contact Management System ||");
     print("----------------------------------------------");
+    print("Press any key to continue...");
+    getch();  // Wait for user input
+    // system("cls"); //add this once complete
 }
+
 void addContact() {
     print("Add a contact");
     print("------------");
@@ -22,28 +28,58 @@ void addContact() {
     appendFile("contacts.csv", contact);
     print("Contact added successfully!");
 }
+void searchContact() {
+    string content;
+    bool readSuccess = readFile("contacts.csv", content);
+    if (!readSuccess) {
+        print("Error reading file!");
+        // todo: create a file instead
+        return;
+    }
+    vector<string> contacts;
+    string contact;
+    splitData(content, "\n", contacts);
+    // print contacts
+    for (int i = 0; i < contacts.size() - 1; i++) {
+        vector<string> contactDetails;
+        splitData(contacts[i], ",", contactDetails);
+        print("Name: " + contactDetails[0]);
+        print("Phone: " + contactDetails[1]);
+        print("Email: " + contactDetails[2]);
+        print("Address: " + contactDetails[3]);
+        print("----------------------------");
+    }
+    print("Search a contact");
+    print("------------");
+    string name = getStr("Enter name: ");
+    print("Contact added successfully!");
+}
 int main() {
     printIntro();
-    string choice = getStr("Select an option: \n1. Add a contact\n2. Search a contact\n3. Delete a contact\n4. Update a contact\n5. Exit\nEnter your choice: ");
-    switch (choice[0]) {
-        case '1':
-            addContact();
-            break;
-        // case '2':
-        //     searchContact();
-        //     break;
-        // case '3':
-        //     deleteContact();
-        //     break;
-        // case '4':
-        //     updateContact();
-        //     break;
-        case '5':
-            exit(0);
-            break;
-        default:
-            print("Invalid choice!");
-            break;
+    bool exit = false;
+    while (!exit) {
+        string choice = getStr("Select an option: \n[C] Add a contact\n[R]Search a contact\n[U] Update a contact\n[D] Delete a contact\n[Q]Exit\nEnter your choice: ");
+        switch (tolower(choice[0])) {
+            case 'c':
+                addContact();
+                break;
+            case 'r':
+                searchContact();
+                break;
+            // case '3':
+            //     deleteContact();
+            //     break;
+            // case '4':
+            //     updateContact();
+            //     break;
+            case 'q':
+                exit = true;
+                break;
+            default:
+                print("Invalid choice!");
+                break;
+        }
     }
+    print("Good bye");
     return 0;
 }
