@@ -1,5 +1,8 @@
+#include <fstream>
 #include <iostream>
 #include <string>
+#include <vector>
+
 // prints in a new line
 template <typename T>
 void print(T Value) {
@@ -32,4 +35,42 @@ std::string getStr(std::string prompt = "") {
     // std::cin.ignore();
     getline(std::cin, s);
     return s;
+}
+
+bool readFile(std::string fileName, std::string& content) {
+    std::ifstream file;
+    file.open(fileName);
+    if (file.is_open()) {
+        std::string line;
+        while (getline(file, line)) {
+            content += line + "\n";
+        }
+        file.close();
+        return true;
+    } else {
+        return false;
+    }
+}
+bool appendFile(std::string fileName, std::string content) {
+    std::ofstream file;
+    file.open(fileName, std::ios::app);
+    if (file.is_open()) {
+        file << content;
+        file.close();
+        return true;
+    } else {
+        return false;
+    }
+}
+// create a function that splits a string
+void splitData(std::string str, std::string delimiter, std::vector<std::string>& vec) {
+    size_t pos = 0;
+    std::string token;
+    while ((pos = str.find(delimiter)) != std::string::npos) {
+        // std::cout << str.substr(0, pos) << std::endl;
+        token = str.substr(0, pos);
+        vec.push_back(token);
+        str.erase(0, pos + delimiter.length());
+    }
+    vec.push_back(str);
 }
