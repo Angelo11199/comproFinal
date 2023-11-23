@@ -16,7 +16,10 @@ void printIntro() {
     getch();  // Wait for user input
     // system("cls"); //add this once complete
 }
-
+char userChoice(string verb = "") {
+    char choice = getStr("Select an option: \n [N] " + verb + " by Name\n [E] " + verb + " by Email")[0];
+    return choice;
+}
 void addContact() {
     print("Add a contact");
     print("------------");
@@ -29,6 +32,7 @@ void addContact() {
     print("Contact added successfully!");
 }
 void searchContact() {
+    char choice = userChoice("Search");
     string content;
     bool readSuccess = readFile("contacts.csv", content);
     if (!readSuccess) {
@@ -54,11 +58,25 @@ void searchContact() {
     string name = getStr("Enter name: ");
     print("Contact added successfully!");
 }
+void deleteContact() {
+    char choice = userChoice("Delete");
+    print("Delete a contact");
+    print("------------");
+    string name = getStr("Enter name: ");
+    print("Contact added successfully!");
+}
+void updateContact() {
+    print("Update a contact");
+    print("------------");
+    string name = getStr("Enter name: ");
+    print("Contact added successfully!");
+}
+
 int main() {
     printIntro();
     bool exit = false;
     while (!exit) {
-        string choice = getStr("Select an option: \n[C] Add a contact\n[R]Search a contact\n[U] Update a contact\n[D] Delete a contact\n[Q]Exit\nEnter your choice: ");
+        string choice = getStr("Select an option: \n[C] Add a contact\n[R] Search a contact\n[U] Update a contact\n[D] Delete a contact\n[Q]Exit\nEnter your choice: ");
         switch (tolower(choice[0])) {
             case 'c':
                 addContact();
@@ -66,12 +84,12 @@ int main() {
             case 'r':
                 searchContact();
                 break;
-            // case '3':
-            //     deleteContact();
+            case 'u':
+                updateContact();
             //     break;
-            // case '4':
-            //     updateContact();
-            //     break;
+            case 'd':
+                deleteContact();
+                break;
             case 'q':
                 exit = true;
                 break;
