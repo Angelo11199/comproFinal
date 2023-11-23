@@ -6,8 +6,7 @@ using namespace std;
 #include <vector>
 
 using namespace std;
-#include <cstdlib>  // Include the <cstdlib> header file for system("cls")
-
+// all functions should be on a different file.
 void printIntro() {
     print("----------------------------------------------");
     print("|| Welcome to the Contact Management System ||");
@@ -44,17 +43,33 @@ void searchContact() {
     string contact;
     splitData(content, "\n", contacts);
     // print contacts
-    for (int i = 0; i < contacts.size() - 1; i++) {
-        vector<string> contactDetails;
-        splitData(contacts[i], ",", contactDetails);
-        print("Name: " + contactDetails[0]);
-        print("Phone: " + contactDetails[1]);
-        print("Email: " + contactDetails[2]);
-        print("Address: " + contactDetails[3]);
-        print("----------------------------");
-    }
     print("Search a contact");
     print("------------");
+    char searchBy = tolower(userChoice("Update"));
+    switch (searchBy) {
+        case 'n': {
+            string name = getStr("Enter name: ");
+            for (int i = 0; i < contacts.size(); i++) {
+                splitData(contacts[i], ",", contact);
+                if (contact[0] == name) {
+                    printLn("Name: " + contact[0] + "\nPhone: " + contact[1] + "\nEmail: " + contact[2] + "\nAddress: " + contact[3]);
+                    break;
+                }
+            }
+            break;
+        }
+        case 'e': {
+            string email = getStr("Enter email: ");
+            for (int i = 0; i < contacts.size(); i++) {
+                splitData(contacts[i], ",", contact);
+                if (contact[2] == email) {
+                    printLn("Name: " + contact[0] + "\nPhone: " + contact[1] + "\nEmail: " + contact[2] + "\nAddress: " + contact[3]);
+                    break;
+                }
+            }
+            break;
+        }
+    }
     string name = getStr("Enter name: ");
     print("Contact added successfully!");
 }
@@ -86,7 +101,7 @@ int main() {
                 break;
             case 'u':
                 updateContact();
-            //     break;
+                break;
             case 'd':
                 deleteContact();
                 break;

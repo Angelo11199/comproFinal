@@ -1,8 +1,9 @@
+#include <trieSearch.h>
+
 #include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
-
 // prints in a new line
 template <typename T>
 void print(T Value) {
