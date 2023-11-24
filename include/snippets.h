@@ -161,15 +161,15 @@ void init(std::string content, std::unordered_map<std::string, std::vector<std::
     splitData(contents, "\n", data);
     std::vector<std::string> fields;
     // loop through the data and add the indexes element to the hashmap
-    // for (int i = 0; i < data.size() - 1; i++) {
-    //     std::vector<std::string> row;
-    //     splitData(data[i], ",", row);
-    //     for (int j = 0; j < indexes.size(); j++) {
-    //         csvData[row[indexes[j]]] = row;
-    //     }
-    // }
-    // print("Initializing...");
-    // print("Initialization complete.");
+    for (int i = 0; i < data.size() - 1; i++) {
+        std::vector<std::string> row;
+        splitData(data[i], ",", row);
+        for (int j = 0; j < indexes.size(); j++) {
+            csvData[row[indexes[j]]] = row;
+        }
+    }
+    print("Initializing...");
+    print("Initialization complete.");
 }
 
 void pauseProgram() {
