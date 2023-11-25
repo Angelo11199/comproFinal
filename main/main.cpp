@@ -4,7 +4,6 @@ using namespace std;
 
 #include <iostream>
 #include <vector>
-using namespace std;
 // all functions should be on a different file.
 void printIntro() {
     print("----------------------------------------------");
@@ -16,7 +15,6 @@ void printIntro() {
 }
 char userChoice(string verb = "") {
     char choice = getStr("Select an option: \n [N] " + verb + " by Name\n [E] " + verb + " by Email \n Your choice:")[0];
-
     return choice;
 }
 void addContact() {
@@ -30,6 +28,9 @@ void addContact() {
     bool isSuccess = appendFile("contacts.csv", contact);
     if (isSuccess) {
         print("Contact added successfully!");
+        // add to csvData
+        vector<string> row = {name, phone, email, address};
+        csvData[name] = row;
         return;
     }
     print("Failed to add contact!");
@@ -39,22 +40,64 @@ void searchContact() {
     vector<string> result = getRow(name);
     if (!result.empty()) {
         print("Name: " + result[0] + "\nPhone: " + result[1] + "\nEmail: " + result[2] + "\nAddress: " + result[3]);
+        print("press any key to continue...");
+        getch();
         return;
     } else
         print("Contact not found.");
 }
 void deleteContact() {
-    char choice = userChoice("Delete");
     print("Delete a contact");
     print("------------");
-    string name = getStr("Enter name: ");
+    string name = getStr("Enter name or email: ");
+    vector<string> result = getRow(name);
+    deleteRow("contacts.csv", result[0]);
+
     print("Contact added successfully!");
 }
 void updateContact() {
+    bool isSuccess = false;
+    string newValue;
     print("Update a contact");
     print("------------");
-    string name = getStr("Enter name: ");
-    print("Contact added successfully!");
+    string name = getStr("Enter the name you wish to update: ");
+    vector<string> result = getRow(name);
+    if (result.empty()) {
+        print("Contact not found.");
+        return;
+    }
+    char choice = getStr("Select to update: \n [N] Update name\n [P] Update phone number\n [E] Update email\n [A] Update address\nYour choice:")[0];
+    switch (tolower(choice)) {
+        case 'n': {
+            newValue = getStr("Enter new name: ");
+            isSuccess = updateRow("contacts.csv", result[0], newValue, 0);
+            result[0] = isSuccess ? newValue : result[0];
+            break;
+        }
+        case 'e': {
+            newValue = getStr("Enter new phone number: ");
+            isSuccess = updateRow("contacts.csv", result[0], newValue, 1);
+            result[1] = isSuccess ? newValue : result[1];
+            break;
+        }
+        case 'a': {
+            newValue = getStr("Enter new email: ");
+            isSuccess = updateRow("contacts.csv", result[0], newValue, 2);
+            break;
+        }
+        case 'd': {
+            result[3] = getStr("Enter new address: ");
+            isSuccess = updateRow("contacts.csv", result[0], newValue, 3);
+            break;
+        }
+        default:
+            print("Invalid choice!");
+            break;
+    }
+    if (isSuccess)
+        print("Contact updated successfully!");
+    else
+        print("Failed to update contact!");
 }
 
 int main() {

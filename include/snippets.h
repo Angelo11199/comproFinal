@@ -53,6 +53,7 @@ bool readFile(std::string fileName, std::string& content) {
     } else
         return false;
 }
+
 // adds data to the file. returns true if successful
 bool appendFile(std::string fileName, std::string content) {
     std::ofstream file;
@@ -65,34 +66,6 @@ bool appendFile(std::string fileName, std::string content) {
         return false;
     }
 }
-// bool deleteRow(std::string fileName, std::string rowName) {
-//     std::string contents;
-//     readFile(fileName, contents);
-//     std::vector<std::string> data;
-//     splitData(contents, "\n", data);
-//     // loop through the data and add the indexes element to the hashmap
-//     for (int i = 0; i < data.size() - 1; i++) {
-//         std::vector<std::string> row;
-//         splitData(data[i], ",", row);
-//         if (row[0] == rowName) {
-//             data.erase(data.begin() + i);
-//             std::string newContent;
-//             for (int i = 0; i < data.size(); i++) {
-//                 newContent += data[i] + "\n";
-//             }
-//             std::ofstream file;
-//             file.open(fileName);
-//             if (file.is_open()) {
-//                 file << newContent;
-//                 file.close();
-//                 return true;
-//             } else {
-//                 return false;
-//             }
-//         }
-//     }
-//     return false;
-// }
 // splits the string into a vector
 void splitData(std::string str, std::string delimiter, std::vector<std::string>& vec) {
     size_t pos = 0;
@@ -116,7 +89,67 @@ std::vector<std::string> getRow(const std::string& value) {
     }
     return {};
 }
-
+bool deleteRow(std::string fileName, std::string rowName) {
+    std::string contents;
+    readFile(fileName, contents);
+    std::vector<std::string> data;
+    splitData(contents, "\n", data);
+    // loop through the data and add the indexes element to the hashmap
+    for (int i = 0; i < data.size() - 1; i++) {
+        std::vector<std::string> row;
+        splitData(data[i], ",", row);
+        if (row[0] == rowName) {
+            data.erase(data.begin() + i);
+            std::string newContent;
+            for (int j = 0; j < data.size() - 1; j++) {
+                newContent += data[j] + "\n";
+            }
+            std::ofstream file;
+            file.open(fileName);
+            if (file.is_open()) {
+                file << newContent;
+                file.close();
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+    return false;
+}
+// updates the row. Args : filename, the name of the first column, the new value, the index to update
+bool updateRow(std::string fileName, std::string colName, std::string newValue, int indexToUpdate) {
+    std::string contents;
+    readFile(fileName, contents);
+    std::vector<std::string> data;
+    splitData(contents, "\n", data);
+    for (int i = 0; i < data.size() - 1; i++) {
+        std::vector<std::string> row;
+        splitData(data[i], ",", row);
+        if (row[0] == colName) {
+            row[indexToUpdate] = newValue;
+            data[i] = "";
+            for (int j = 0; j < row.size() - 1; j++) {
+                data[i] += row[j] + ",";
+            }
+            data[i] += row[row.size() - 1];
+            std::string newContent;
+            for (int j = 0; j < data.size() - 1; j++) {
+                newContent += data[j] + "\n";
+            }
+            std::ofstream file;
+            file.open(fileName);
+            if (file.is_open()) {
+                file << newContent;
+                file.close();
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+    return true;
+}
 void init(std::string content, std::unordered_map<std::string, std::vector<std::string>>& csvData, const std::vector<int>& indexes) {
     std::string contents;
     readFile(content, contents)
