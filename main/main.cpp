@@ -29,7 +29,7 @@ int main() {
             print("Exit");
             break;
         default:
-            // print("Invalid choice");
+            print("Invalid choice");
     }
 
 
