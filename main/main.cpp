@@ -1,10 +1,9 @@
-#include "../include/snippets.h"  //ALWAYS ADD THIS
+#include "../include/snippets.h"
 using namespace std;
 #include <conio.h>  // Include the <conio.h> header file
 
 #include <iostream>
 #include <vector>
-
 using namespace std;
 // all functions should be on a different file.
 void printIntro() {
@@ -16,7 +15,8 @@ void printIntro() {
     // system("cls"); //add this once complete
 }
 char userChoice(string verb = "") {
-    char choice = getStr("Select an option: \n [N] " + verb + " by Name\n [E] " + verb + " by Email")[0];
+    char choice = getStr("Select an option: \n [N] " + verb + " by Name\n [E] " + verb + " by Email \n Your choice:")[0];
+
     return choice;
 }
 void addContact() {
@@ -27,51 +27,21 @@ void addContact() {
     string email = getStr("Enter email: ");
     string address = getStr("Enter current address: ");
     string contact = name + "," + phone + "," + email + "," + address + "\n";
-    appendFile("contacts.csv", contact);
-    print("Contact added successfully!");
-}
-void searchContact() {
-    char choice = userChoice("Search");
-    string content;
-    bool readSuccess = readFile("contacts.csv", content);
-    if (!readSuccess) {
-        print("Error reading file!");
-        // todo: create a file instead
+    bool isSuccess = appendFile("contacts.csv", contact);
+    if (isSuccess) {
+        print("Contact added successfully!");
         return;
     }
-    vector<string> contacts;
-    string contact;
-    splitData(content, "\n", contacts);
-    // print contacts
-    print("Search a contact");
-    print("------------");
-    char searchBy = tolower(userChoice("Update"));
-    switch (searchBy) {
-        case 'n': {
-            string name = getStr("Enter name: ");
-            for (int i = 0; i < contacts.size(); i++) {
-                splitData(contacts[i], ",", contact);
-                if (contact[0] == name) {
-                    printLn("Name: " + contact[0] + "\nPhone: " + contact[1] + "\nEmail: " + contact[2] + "\nAddress: " + contact[3]);
-                    break;
-                }
-            }
-            break;
-        }
-        case 'e': {
-            string email = getStr("Enter email: ");
-            for (int i = 0; i < contacts.size(); i++) {
-                splitData(contacts[i], ",", contact);
-                if (contact[2] == email) {
-                    printLn("Name: " + contact[0] + "\nPhone: " + contact[1] + "\nEmail: " + contact[2] + "\nAddress: " + contact[3]);
-                    break;
-                }
-            }
-            break;
-        }
-    }
-    string name = getStr("Enter name: ");
-    print("Contact added successfully!");
+    print("Failed to add contact!");
+}
+void searchContact() {
+    string name = getStr("Enter name or email: ");
+    vector<string> result = getRow(name);
+    if (!result.empty()) {
+        print("Name: " + result[0] + "\nPhone: " + result[1] + "\nEmail: " + result[2] + "\nAddress: " + result[3]);
+        return;
+    } else
+        print("Contact not found.");
 }
 void deleteContact() {
     char choice = userChoice("Delete");
@@ -88,6 +58,8 @@ void updateContact() {
 }
 
 int main() {
+    std::vector<int> indexes = {0, 2};
+    init("contacts.csv", csvData, indexes);
     printIntro();
     bool exit = false;
     while (!exit) {
