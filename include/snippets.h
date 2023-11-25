@@ -65,34 +65,34 @@ bool appendFile(std::string fileName, std::string content) {
         return false;
     }
 }
-bool deleteRow(std::string fileName, std::string rowName) {
-    std::string contents;
-    readFile(fileName, contents);
-    std::vector<std::string> data;
-    splitData(contents, "\n", data);
-    // loop through the data and add the indexes element to the hashmap
-    for (int i = 0; i < data.size() - 1; i++) {
-        std::vector<std::string> row;
-        splitData(data[i], ",", row);
-        if (row[0] == rowName) {
-            data.erase(data.begin() + i);
-            std::string newContent;
-            for (int i = 0; i < data.size(); i++) {
-                newContent += data[i] + "\n";
-            }
-            std::ofstream file;
-            file.open(fileName);
-            if (file.is_open()) {
-                file << newContent;
-                file.close();
-                return true;
-            } else {
-                return false;
-            }
-        }
-    }
-    return false;
-}
+// bool deleteRow(std::string fileName, std::string rowName) {
+//     std::string contents;
+//     readFile(fileName, contents);
+//     std::vector<std::string> data;
+//     splitData(contents, "\n", data);
+//     // loop through the data and add the indexes element to the hashmap
+//     for (int i = 0; i < data.size() - 1; i++) {
+//         std::vector<std::string> row;
+//         splitData(data[i], ",", row);
+//         if (row[0] == rowName) {
+//             data.erase(data.begin() + i);
+//             std::string newContent;
+//             for (int i = 0; i < data.size(); i++) {
+//                 newContent += data[i] + "\n";
+//             }
+//             std::ofstream file;
+//             file.open(fileName);
+//             if (file.is_open()) {
+//                 file << newContent;
+//                 file.close();
+//                 return true;
+//             } else {
+//                 return false;
+//             }
+//         }
+//     }
+//     return false;
+// }
 // splits the string into a vector
 void splitData(std::string str, std::string delimiter, std::vector<std::string>& vec) {
     size_t pos = 0;
