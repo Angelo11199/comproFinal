@@ -13,6 +13,8 @@ By building this project, you will comprehend the basics of the input and output
  - view records
     - by roll number
     - by name
+    - year level
+    - course
 - add records
 - delete records
 - modify records
