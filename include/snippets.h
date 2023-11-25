@@ -36,7 +36,7 @@ double getNum(std::string prompt = "") {
 std::string getStr(std::string prompt = "") {
     std::string s;
     std::cout << prompt;
-    // std::cin.ignore();
+    std::cin.ignore();
     getline(std::cin, s);
     return s;
 }
