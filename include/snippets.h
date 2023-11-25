@@ -65,7 +65,7 @@ bool appendFile(std::string fileName, std::string content) {
         return false;
     }
 }
-bool deleteRow(string fileName, string rowName) {
+bool deleteRow(std::string fileName, std::string rowName) {
     std::string contents;
     readFile(fileName, contents);
     std::vector<std::string> data;
