@@ -32,6 +32,7 @@ double getNum(std::string prompt = "") {
     } while (true);
     return 0;
 }
+// gets a string from the user
 std::string getStr(std::string prompt = "") {
     std::string s;
     std::cout << prompt;
@@ -71,7 +72,6 @@ void splitData(std::string str, std::string delimiter, std::vector<std::string>&
     size_t pos = 0;
     std::string token;
     while ((pos = str.find(delimiter)) != std::string::npos) {
-        // std::cout << str.substr(0, pos) << std::endl;
         token = str.substr(0, pos);
         vec.push_back(token);
         str.erase(0, pos + delimiter.length());
@@ -89,6 +89,7 @@ std::vector<std::string> getRow(const std::string& value) {
     }
     return {};
 }
+// deletes the row. Args : filename, the name of the first column
 bool deleteRow(std::string fileName, std::string rowName) {
     std::string contents;
     readFile(fileName, contents);
@@ -150,6 +151,7 @@ bool updateRow(std::string fileName, std::string colName, std::string newValue, 
     }
     return true;
 }
+// initializes the csvData. Args : filename, the hashmap to store the data, the indexes used for searching
 void init(std::string content, std::unordered_map<std::string, std::vector<std::string>>& csvData, const std::vector<int>& indexes) {
     std::string contents;
     readFile(content, contents)
@@ -163,10 +165,14 @@ void init(std::string content, std::unordered_map<std::string, std::vector<std::
         std::vector<std::string> row;
         splitData(data[i], ",", row);
         for (int j = 0; j < indexes.size(); j++) {
-            print(indexes[j]);
             csvData[row[indexes[j]]] = row;
         }
     }
     print("Initializing...");
     print("Initialization complete.");
+}
+
+void pauseProgram() {
+    print("press any key to continue...");
+    getch();
 }
