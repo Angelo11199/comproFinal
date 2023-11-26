@@ -166,9 +166,22 @@ bool updateRow(std::string fileName, std::string colName, std::string newValue, 
     }
     return true;
 }
+void pauseProgram() {
+    print("press any key to continue...");
+    getch();
+}
+
+void checkIfRunnable() {
+    if (system("g++ --version")) {
+        print("g++ is not installed. Please install g++ to run this program.");
+        getch();
+        exit(1);
+    }
+}
 // initializes the csvData. Args : filename, the hashmap to store the data, the indexes used for searching
 void init(std::string content, std::unordered_map<std::string, std::vector<std::string>>& csvData, const std::vector<int>& indexes) {
     std::string contents;
+    checkIfRunnable();
     readFile(content, contents)
         ? print(content + " read successfully.")
         : print(content + " read failed.");
@@ -189,9 +202,4 @@ void init(std::string content, std::unordered_map<std::string, std::vector<std::
     }
     print("Initializing...");
     print("Initialization complete.");
-}
-
-void pauseProgram() {
-    print("press any key to continue...");
-    getch();
 }
