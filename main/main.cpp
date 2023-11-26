@@ -19,6 +19,17 @@ void addrecord(){
     return;
 }
 
+void deleterecord(){
+    print("Delete a record");
+}
+
+void modifyrecord(){
+    print ("Modify a record");
+}
+
+void viewrecord(){
+    print("Viewing records...");
+}
 
 int main() {
     int x = 0;
@@ -36,12 +47,13 @@ int main() {
             addrecord();
             break;
         case '2':
+            deleterecord();
             break;
         case '3':
-            print("Modify record(s)");
+            modifyrecord();
             break;
         case '4':
-            print("View record(s)");
+            viewrecord();
             break;
         case '5':
             x = 1;
