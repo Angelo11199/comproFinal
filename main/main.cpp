@@ -4,16 +4,18 @@ using namespace std;
 
 #include <iostream>
 #include <vector>
-
+struct contactData {
+    string name;
+    string phone;
+    string email;
+    string address;
+    string notes;
+};
 void printIntro() {
     print("----------------------------------------------");
     print("|| Welcome to the Contact Management System ||");
     print("----------------------------------------------");
     pauseProgram();
-}
-char userChoice(string verb = "") {
-    char choice = getStr("Select an option: \n [N] " + verb + " by Name\n [E] " + verb + " by Email \n Your choice:")[0];
-    return choice;
 }
 void addContact() {
     system("cls");
@@ -31,7 +33,7 @@ void addContact() {
         email = getStr("Enter email: ");
     }
     string address = getStr("Enter current address: ");
-    string contact = name + "," + phone + "," + email + "," + address + "\n";
+    string contact = name + SEPERATOR + phone + SEPERATOR + email + SEPERATOR + address + "\n";
     bool isSuccess = appendFile("contacts.csv", contact);
     if (isSuccess) {
         print("Contact added successfully!");
@@ -61,6 +63,13 @@ void deleteContact() {
     print("Contact added successfully!");
     pauseProgram();
 }
+bool updateProcess(string noun, vector<string> result, int index) {
+    string newValue = getStr("Enter new" + noun + ":");
+    bool isSuccess = updateRow("contacts.csv", result[0], newValue, index);
+    result[index] = isSuccess ? newValue : result[index];
+    csvData[result[0]] = result;
+    return isSuccess;
+}
 void updateContact() {
     system("cls");
     bool isSuccess = false;
@@ -77,32 +86,18 @@ void updateContact() {
     char choice = getStr("Select to update: \n [N] Update name\n [P] Update phone number\n [E] Update email\n [A] Update address\n [B] Go back \nYour choice:")[0];
     while (!isSuccess) {
         switch (tolower(choice)) {
-            case 'n': {
-                newValue = getStr("Enter new name: ");
-                isSuccess = updateRow("contacts.csv", result[0], newValue, 0);
-                result[0] = isSuccess ? newValue : result[0];
-
+            case 'n':
+                isSuccess = updateProcess("name", result, 0);
                 break;
-            }
-            case 'p': {
-                newValue = getStr("Enter new phone number: ");
-                isSuccess = updateRow("contacts.csv", result[0], newValue, 1);
-                result[1] = isSuccess ? newValue : result[1];
-
+            case 'p':
+                isSuccess = updateProcess("phone number", result, 1);
                 break;
-            }
-            case 'e': {
-                newValue = getStr("Enter new email: ");
-                isSuccess = updateRow("contacts.csv", result[0], newValue, 2);
-
+            case 'e':
+                isSuccess = updateProcess("email", result, 2);
                 break;
-            }
-            case 'd': {
-                result[3] = getStr("Enter new address: ");
-                isSuccess = updateRow("contacts.csv", result[0], newValue, 3);
-
+            case 'd':
+                isSuccess = updateProcess("address", result, 3);
                 break;
-            }
             case 'b':
                 isSuccess = true;
                 break;
