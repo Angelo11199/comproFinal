@@ -66,14 +66,14 @@ void deleterecord() {
     switch(Choice1[0]){
         case '1':{
             string RN = getStr("Enter roll number: ");
-            vector<string> result = getRow(0);
+            vector<string> result = getRow(RN);
             deleteRow("record.csv", result[0]);
             print("Record deleted successfully!");
             break;
         }
         case '2':{
             string last = getStr("Enter last name: ");
-            vector<string> result = getRow(1);
+            vector<string> result = getRow(last);
             deleteRow("record.csv", result[1]);
             print("Contact deleted successfully!");
             break;
@@ -115,28 +115,28 @@ void viewrecord() {
     switch(Choice3[0]){
         case '1':{
             string RN = getStr("Enter roll number: ");
-            vector<string> result = getRow(0);
+            vector<string> result = getRow(RN);
             if (result.empty()){
                 print("--------------------------------");
                 print("Contact not found.");
                 print("--------------------------------");}
             else{
-            print("--------------------------------");
-            print("Roll Number: " + result[0] + "\nLast Name" + result[1] + "\nFirst Name" + result[2] + "\nMiddle Name" + result[3] + "\nContact Number" + result[4] + "\nYear Level" + result[5] + "\nCourse" + result[6] + "\nEmail" + result[7] );
-            print("--------------------------------");}
+                print("--------------------------------");
+                print("Roll Number: " + result[0] + "\nLast Name" + result[1] + "\nFirst Name" + result[2] + "\nMiddle Name" + result[3] + "\nContact Number" + result[4] + "\nYear Level" + result[5] + "\nCourse" + result[6] + "\nEmail" + result[7] );
+                print("--------------------------------");}
             break;
         }
         case '2':{
             string last = getStr("Enter last name: ");
-            vector<string> result = getRow(1);
+            vector<string> result = getRow(last);
             if (result.empty()){
                 print("--------------------------------");
                 print("Contact not found.");
                 print("--------------------------------");}
             else{
-            print("--------------------------------");
-            print("Roll Number: " + result[0] + "\nLast Name" + result[1] + "\nFirst Name" + result[2] + "\nMiddle Name" + result[3] + "\nContact Number" + result[4] + "\nYear Level" + result[5] + "\nCourse" + result[6] + "\nEmail" + result[7] );
-            print("--------------------------------");}
+                print("--------------------------------");
+                print("Roll Number: " + result[0] + "\nLast Name" + result[1] + "\nFirst Name" + result[2] + "\nMiddle Name" + result[3] + "\nContact Number" + result[4] + "\nYear Level" + result[5] + "\nCourse" + result[6] + "\nEmail" + result[7] );
+                print("--------------------------------");}
             break;
         }
         default:{
