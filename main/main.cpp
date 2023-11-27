@@ -16,8 +16,8 @@ void addrecord() {
     string middle = getStr("Enter middle name: ");
     string RN = getStr("Enter roll number: ");
     while (RN.length() != 9) {
-        print("Invalid student number, try again.");
-        RN = getStr("Enter student number: ");
+        print("Invalid roll number, try again.");
+        RN = getStr("Enter roll number: ");
     }
     string CN = getStr("Enter contact number: ");
     while (CN.length() != 11 && CN.length() != 7) {
