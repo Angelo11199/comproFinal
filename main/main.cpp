@@ -292,7 +292,7 @@ int main() {
                 print("Invalid choice!");
                 break;
         };
-    }
+    };
     print("Good bye");
     return 0;
 }
