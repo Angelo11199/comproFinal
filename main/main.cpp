@@ -7,7 +7,7 @@ using namespace std;
 #include <vector>
 
 void addrecord() {
-    system("cls");
+    // system("cls");
     print("--------------------------------");
     print("ADD A RECORD");
     print("--------------------------------");
@@ -42,7 +42,7 @@ void addrecord() {
     string course = getStr("Enter course: ");
     string email = getStr("Enter email: ");
     string FN = last + ", " + first + " " + middle;
-    string record = RN + SEPERATOR + FN + SEPERATOR + CN + SEPERATOR + year + SEPERATOR + course + SEPERATOR + email;
+    string record = RN + SEPERATOR + FN + SEPERATOR + CN + SEPERATOR + year + SEPERATOR + course + SEPERATOR + email + "\n";
     bool isSuccess = appendFile("record.csv", record);
     if (isSuccess) {
         print("Contact added successfully!");
@@ -55,7 +55,7 @@ void addrecord() {
 }
 
 void deleterecord() {
-    system("cls");
+    // system("cls");
     print("--------------------------------");
     print("DELETE A RECORD");
     print("--------------------------------");
@@ -87,8 +87,21 @@ void deleterecord() {
 }
 
 void modifyrecord() {
-    print("Modify a record");
-}
+    // system("cls");
+    print("--------------------------------");
+    print("MODIFY A RECORD");
+    print("--------------------------------");
+    string RN = getStr ("Enter roll number: ");
+    vector<string> result = getRow(RN);
+    //print (result[0]);
+    if (result.empty()){
+        print("Contact not found.");
+        pauseProgram();
+        return;
+    }
+
+
+} 
 
 void viewrecord() {
     print("Viewing records...");
@@ -99,32 +112,32 @@ int main() {
     init("record.csv", csvData, indexes);
     bool exit = false;
     while (!exit) {
-        system("cls");
+        // system("cls");
         print("--------------------------------");
         print("Student Record Management System");
         print("--------------------------------");
-        print("[1] - Add record");
-        print("[2] - Delete record");
-        print("[3] - Modify record");
-        print("[4] - View record");
-        print("[5] - QUIT");
+        print("[A] - Add record");
+        print("[D] - Delete record");
+        print("[M] - Modify record");
+        print("[V] - View record");
+        print("[Q] - QUIT");
         print("--------------------------------");
         string choice = getStr("Enter your choice: ");
 
-        switch (choice[0]) {
-            case '1':
+        switch (tolower(choice[0])) {
+            case 'a':
                 addrecord();
                 break;
-            case '2':
+            case 'd':
                 deleterecord();
                 break;
-            case '3':
+            case 'm':
                 modifyrecord();
                 break;
-            case '4':
+            case 'v':
                 viewrecord();
                 break;
-            case '5':
+            case 'q':
                 exit = true;
                 print("Exit");
                 break;
