@@ -1,67 +1,67 @@
 #include "../include/snippets.h"
 using namespace std;
+#include <conio.h>
+
 #include <iomanip>
 #include <iostream>
-#include <conio.h>
 #include <vector>
 
-void addrecord(){
+void addrecord() {
     system("cls");
     print("Add a record");
     string last = getStr("Enter last name: ");
     string first = getStr("Enter first name: ");
     string middle = getStr("Enter middle name: ");
     string SN = getStr("Enter student number: ");
-        while (SN.length() != 9){
-            print ("Invalid student number, try again.");
-            SN = getStr("Enter student number: ");
-        }
+    while (SN.length() != 9) {
+        print("Invalid student number, try again.");
+        SN = getStr("Enter student number: ");
+    }
     string CN = getStr("Enter contact number: ");
-        while (CN.length() != 11 || CN.length() != 7){
-            print ("Invalid phone number, try again.");
-            CN = getStr("Enter phone number: ");
-        }
+    while (CN.length() != 11 && CN.length() != 7) {
+        print("Invalid contact number, try again.");
+        CN = getStr("Enter contact number: ");
+    }
+
     string year = getStr("Enter year level (number): ");
-        switch (year[0]) {
-            case '1':
-                year = "1st";
-                break;
-            case '2':
-                year = "2nd";
-                break;
-            case '3':
-                year = "3rd";
-                break;
-            default:
-                year = year + "th";
-        }
+    switch (year[0]) {
+        case '1':
+            year = "1st";
+            break;
+        case '2':
+            year = "2nd";
+            break;
+        case '3':
+            year = "3rd";
+            break;
+        default:
+            year = year + "th";
+    }
     string course = getStr("Enter course: ");
     string email = getStr("Enter email: ");
     string FN = last + ", " + first + " " + middle;
-    string record = SN + "|" + FN  + " | " + CN + " | " + year + " | " + course + " | " + email;
+    string record = SN + SEPERATOR + FN + SEPERATOR + CN + SEPERATOR + year + SEPERATOR + course + SEPERATOR + email;
     bool isSuccess = appendFile("record.csv", record);
     if (isSuccess) {
         print("Contact added successfully!");
         vector<string> row = {SN, last, first, middle, CN, year, course, email};
         csvData[SN] = row;
+        csvData[last] = row;
     } else
         print("Failed to add contact!");
     pauseProgram();
 }
 
-void deleterecord(){
+void deleterecord() {
     print("Delete a record");
-
 }
 
-void modifyrecord(){
-    print ("Modify a record");
-
+void modifyrecord() {
+    print("Modify a record");
 }
 
-void viewrecord(){
+void viewrecord() {
     print("Viewing records...");
-
 }
 
 int main() {
@@ -98,6 +98,6 @@ int main() {
             default:
                 print("Invalid choice");
         }
-    return 0;
+        return 0;
     }
 }
