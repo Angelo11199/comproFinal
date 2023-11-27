@@ -53,14 +53,6 @@ void addrecord(){
     pauseProgram();
 }
 
-void addrecordwelcome() {
-    // system("cls");
-    print("--------------------------------");
-    print("ADD A RECORD");
-    print("--------------------------------");
-    addrecord();
-}
-
 void deleterecord() {
     // system("cls");
     print("--------------------------------");
@@ -72,8 +64,8 @@ void deleterecord() {
     string Choice1 = getStr("Enter your choice: ");
     switch(Choice1[0]){
         case '1':{
-            string SN = getStr("Enter roll number: ");
-            vector<string> result = getRow(SN);
+            string RN = getStr("Enter roll number: ");
+            vector<string> result = getRow(RN);
             deleteRow("record.csv", result[0]);
             print("Record deleted successfully!");
             break;
@@ -104,15 +96,54 @@ void modifyrecord() {
     if (result.empty()){
         print("Roll number not found.");
         pauseProgram();
-        return;
+return;
     }
-    deleteRow("record.csv", result[0]);
-    addrecord(); 
+deleteRow("record.csv", result[0]);
+    addrecord();
 
 } 
 
 void viewrecord() {
-    print("Viewing records...");
+    print("--------------------------------");
+    print("VIEWING RECORD");
+    print("--------------------------------");
+    print("[1] - Roll number");
+    print("[2] - Last name");
+    print("--------------------------------");
+    string Choice3 = getStr("Enter your choice: ");
+    switch(Choice3[0]){
+        case '1':{
+            string RN = getStr("Enter roll number: ");
+            vector<string> result = getRow(RN);
+            if (result.empty()){
+                print("--------------------------------");
+                print("Contact not found.");
+                print("--------------------------------");}
+            else{
+            print("--------------------------------");
+            print("Roll Number: " + result[0] + "\nLast Name" + result[1] + "\nFirst Name" + result[2] + "\nMiddle Name" + result[3] + "\nContact Number" + result[4] + "\nYear Level" + result[5] + "\nCourse" + result[6] + "\nEmail" + result[7] );
+            print("--------------------------------");}
+            break;
+        }
+        case '2':{
+            string last = getStr("Enter last name: ");
+            vector<string> result = getRow(last);
+            if (result.empty()){
+                print("--------------------------------");
+                print("Contact not found.");
+                print("--------------------------------");}
+            else{
+            print("--------------------------------");
+            print("Roll Number: " + result[0] + "\nLast Name" + result[1] + "\nFirst Name" + result[2] + "\nMiddle Name" + result[3] + "\nContact Number" + result[4] + "\nYear Level" + result[5] + "\nCourse" + result[6] + "\nEmail" + result[7] );
+            print("--------------------------------");}
+            break;
+        }
+        default:{
+            print("Invalid Choice");
+        }
+    }
+    pauseProgram();
+
 }
 
 int main() {
@@ -134,7 +165,7 @@ int main() {
 
         switch (tolower(choice[0])) {
             case 'a':
-                addrecordwelcome();
+                addrecord();
                 break;
             case 'd':
                 deleterecord();
