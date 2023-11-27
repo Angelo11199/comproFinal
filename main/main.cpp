@@ -6,11 +6,9 @@ using namespace std;
 #include <iostream>
 #include <vector>
 
-void addrecord() {
-    // system("cls");
-    print("--------------------------------");
-    print("ADD A RECORD");
-    print("--------------------------------");
+
+
+void addrecord(){
     string last = getStr("Enter last name: ");
     string first = getStr("Enter first name: ");
     string middle = getStr("Enter middle name: ");
@@ -49,9 +47,18 @@ void addrecord() {
         vector<string> row = {RN, last, first, middle, CN, year, course, email};
         csvData[RN] = row;
         csvData[last] = row;
-    } else
+    } 
+    else
         print("Failed to add contact!");
     pauseProgram();
+}
+
+void addrecordwelcome() {
+    // system("cls");
+    print("--------------------------------");
+    print("ADD A RECORD");
+    print("--------------------------------");
+    addrecord();
 }
 
 void deleterecord() {
@@ -95,11 +102,12 @@ void modifyrecord() {
     vector<string> result = getRow(RN);
     //print (result[0]);
     if (result.empty()){
-        print("Contact not found.");
+        print("Roll number not found.");
         pauseProgram();
         return;
     }
-
+    deleteRow("record.csv", result[0]);
+    addrecord(); 
 
 } 
 
@@ -126,7 +134,7 @@ int main() {
 
         switch (tolower(choice[0])) {
             case 'a':
-                addrecord();
+                addrecordwelcome();
                 break;
             case 'd':
                 deleterecord();
