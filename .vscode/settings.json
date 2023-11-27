@@ -63,6 +63,21 @@
 		"xtr1common": "cpp",
 		"xutility": "cpp",
 		"list": "cpp",
-		"xhash": "cpp"
+		"xhash": "cpp",
+		"thread": "cpp",
+		"charconv": "cpp",
+		"chrono": "cpp",
+		"format": "cpp",
+		"forward_list": "cpp",
+		"locale": "cpp",
+		"map": "cpp",
+		"mutex": "cpp",
+		"ratio": "cpp",
+		"stop_token": "cpp",
+		"xlocbuf": "cpp",
+		"xlocmes": "cpp",
+		"xlocmon": "cpp",
+		"xloctime": "cpp",
+		"xtree": "cpp"
 	}
 }

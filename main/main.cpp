@@ -2,137 +2,133 @@
 using namespace std;
 #include <conio.h>
 
+#include <chrono>
 #include <iostream>
+#include <string>
+#include <thread>
 #include <vector>
-struct contactData {
+#define PINDIGITS 6
+// craeting the structure for the bank info
+struct BankInfo {
     string name;
+    string address;
     string phone;
     string email;
-    string address;
-    string notes;
+    string accountNumber;
+    string accountType;
+    string balance;
+    int pin;
 };
-void printIntro() {
-    print("----------------------------------------------");
-    print("|| Welcome to the Contact Management System ||");
-    print("----------------------------------------------");
-    pauseProgram();
-}
-void addContact() {
-    system("cls");
-    print("Add a contact");
-    print("------------");
-    string name = getStr("Enter name: ");
-    string phone = getStr("Enter phone number: ");
-    while (phone.length() != 11) {
-        print("Invalid phone number!");
-        phone = getStr("Enter phone number: ");
-    }
-    string email = getStr("Enter email: ");
-    while (email.find("@") == string::npos) {
-        print("Invalid email!");
-        email = getStr("Enter email: ");
-    }
-    string address = getStr("Enter current address: ");
-    string contact = name + SEPERATOR + phone + SEPERATOR + email + SEPERATOR + address + "\n";
-    bool isSuccess = appendFile("contacts.csv", contact);
-    if (isSuccess) {
-        print("Contact added successfully!");
-        vector<string> row = {name, phone, email, address};
-        csvData[name] = row;
-    } else
-        print("Failed to add contact!");
-    pauseProgram();
-}
-void searchContact() {
-    system("cls");
-    string name = getStr("Enter name or email: ");
-    vector<string> result = getRow(name);
-    if (!result.empty())
-        print("Name: " + result[0] + "\nPhone: " + result[1] + "\nEmail: " + result[2] + "\nAddress: " + result[3]);
-    else
-        print("Contact not found.");
-    pauseProgram();
-}
-void deleteContact() {
-    system("cls");
-    print("Delete a contact");
-    print("------------");
-    string name = getStr("Enter name or email: ");
-    vector<string> result = getRow(name);
-    deleteRow("contacts.csv", result[0]);
-    print("Contact added successfully!");
-    pauseProgram();
-}
-bool updateProcess(string noun, vector<string> result, int index) {
-    string newValue = getStr("Enter new" + noun + ":");
-    bool isSuccess = updateRow("contacts.csv", result[0], newValue, index);
-    result[index] = isSuccess ? newValue : result[index];
-    csvData[result[0]] = result;
-    return isSuccess;
-}
-void updateContact() {
-    system("cls");
-    bool isSuccess = false;
-    string newValue;
-    print("Update a contact");
-    print("------------");
-    string name = getStr("Enter the name you wish to update: ");
-    vector<string> result = getRow(name);
-    if (result.empty()) {
-        print("Contact not found.");
-        pauseProgram();
+void getAccount() {
+    string accountNumber = getStr("Please enter your account number:");
+    vector<string> accountInfo = getRow(accountNumber);
+    if (accountInfo.size() == 0) {
+        print("Account not found");
         return;
     }
-    char choice = getStr("Select to update: \n [N] Update name\n [P] Update phone number\n [E] Update email\n [A] Update address\n [B] Go back \nYour choice:")[0];
-    while (!isSuccess) {
-        switch (tolower(choice)) {
-            case 'n':
-                isSuccess = updateProcess("name", result, 0);
-                break;
-            case 'p':
-                isSuccess = updateProcess("phone number", result, 1);
-                break;
-            case 'e':
-                isSuccess = updateProcess("email", result, 2);
-                break;
-            case 'd':
-                isSuccess = updateProcess("address", result, 3);
-                break;
-            case 'b':
-                isSuccess = true;
-                break;
-            default:
-                print("Invalid choice!");
-                break;
+    int pin = getPin();
+    if (accountInfo[7] == to_string(pin)) {
+        print("Account found");
+        // print account info
+        for (auto info : accountInfo) {
+            print(info);
         }
+        return;
     }
-    if (isSuccess)
-        print("Contact updated successfully!");
-    else
-        print("Failed to update contact!");
-    pauseProgram();
+    string pin = getStr("Please enter your pin:");
 }
-
+int getHour() {
+    auto currentTime = std::chrono::system_clock::now();
+    std::time_t currentTime_t = std::chrono::system_clock::to_time_t(currentTime);
+    std::tm* currentTime_tm = std::localtime(&currentTime_t);
+    int hours = currentTime_tm->tm_hour;
+    return hours;
+}
+void printIntro(string s) {
+    for (const auto c : s) {
+        cout << c << flush;
+        this_thread::sleep_for(10ms);
+    }
+    print("");
+}
+int getPin() {
+    string pinLength = "";
+    char* p;
+    do {
+        char digit = getch();
+        printLn("*");
+        if (isdigit(digit)) {
+            pinLength += digit;
+        } else {
+            print("Invalid input. Try again at the beginning.");
+            pinLength = "";
+            continue;
+        }
+        if (pinLength.length() == PINDIGITS) {
+            print("");
+            print("Pin entered successfully");
+            cin.ignore();
+            return stoi(pinLength);
+        }
+    } while (pinLength.length() != PINDIGITS);
+    return 0;
+}
+bool createAccount() {
+    BankInfo bankInfo;
+    print("Please enter your name:");
+    bankInfo.name = getStr("");
+    print("Please enter your address:");
+    bankInfo.address = getStr("");
+    print("Please enter your phone number:");
+    bankInfo.phone = getStr("");
+    print("Please enter your email:");
+    bankInfo.email = getStr("");
+    print("Please enter your account number:");
+    bankInfo.accountNumber = getStr("");
+    print("Please enter your account type:");
+    bankInfo.accountType = getStr("");
+    print("Please enter your balance:");
+    bankInfo.balance = getStr("");
+    print("Please enter your pin:");
+    bankInfo.pin = getPin();
+    return true;
+}
 int main() {
-    std::vector<int> indexes = {0, 2};
-    init("contacts.csv", csvData, indexes);
-    printIntro();
+    printIntro("========================================");
+    printIntro("||Welcome to the Bank Management System||");
+    printIntro("========================================");
+    pauseProgram();
+    vector<int> indexes = {0, 4};
+    init("bankInfo.csv", csvData, indexes);
+    // create an input that doesn't show what is being typed
     bool exit = false;
     while (!exit) {
         system("cls");
-        string choice = getStr("Select an option: \n[C] Add a contact\n[R] Search a contact\n[U] Update a contact\n[D] Delete a contact\n[Q]Exit\nEnter your choice: ");
+        int hours = getHour();
+        if (hours >= 0 && hours < 12)
+            printLn("Good Morning!");
+        else if (hours >= 12 && hours < 18)
+            printLn("Good Afternoon!");
+        else if (hours >= 18 && hours <= 23)
+            printLn("Good Evening!");
+        printLn(" Welcome to the Bank Management System");
+        print("");
+        print("Please select an option");
+        print("C. Create a new account");
+        print("R. Get an existing account");
+        print("U. Update an existing account");
+        print("D. Delete an existing account");
+        print("Q. Quit");
+        string choice = getStr("Your choice:");
         switch (tolower(choice[0])) {
             case 'c':
-                addContact();
+                createAccount();
                 break;
             case 'r':
-                searchContact();
                 break;
             case 'u':
-                updateContact();
                 break;
             case 'd':
-                deleteContact();
                 break;
             case 'q':
                 exit = true;
@@ -140,7 +136,7 @@ int main() {
             default:
                 print("Invalid choice!");
                 break;
-        }
+        };
     }
     print("Good bye");
     return 0;

@@ -166,13 +166,17 @@ bool updateRow(std::string fileName, std::string colName, std::string newValue, 
     }
     return true;
 }
+void pauseProgram() {
+    print("press any key to continue...");
+    getch();
+}
+
 // initializes the csvData. Args : filename, the hashmap to store the data, the indexes used for searching
 void init(std::string content, std::unordered_map<std::string, std::vector<std::string>>& csvData, const std::vector<int>& indexes) {
     std::string contents;
     readFile(content, contents)
         ? print(content + " read successfully.")
         : print(content + " read failed.");
-
     std::vector<std::string> data;
     std::vector<std::string> fields;
     splitData(contents, "\n", data);
@@ -189,9 +193,4 @@ void init(std::string content, std::unordered_map<std::string, std::vector<std::
     }
     print("Initializing...");
     print("Initialization complete.");
-}
-
-void pauseProgram() {
-    print("press any key to continue...");
-    getch();
 }
