@@ -9,6 +9,7 @@ using namespace std;
 
 
 void addrecord(){
+    system("cls");
     string last = getStr("Enter last name: ");
     string first = getStr("Enter first name: ");
     string middle = getStr("Enter middle name: ");
@@ -54,7 +55,7 @@ void addrecord(){
 }
 
 void deleterecord() {
-    // system("cls");
+    system("cls");
     print("--------------------------------");
     print("DELETE A RECORD");
     print("--------------------------------");
@@ -65,15 +66,15 @@ void deleterecord() {
     switch(Choice1[0]){
         case '1':{
             string RN = getStr("Enter roll number: ");
-            vector<string> result = getRow(RN);
+            vector<string> result = getRow(0);
             deleteRow("record.csv", result[0]);
             print("Record deleted successfully!");
             break;
         }
         case '2':{
             string last = getStr("Enter last name: ");
-            vector<string> result = getRow(last);
-            deleteRow("record.csv", result[0]);
+            vector<string> result = getRow(1);
+            deleteRow("record.csv", result[1]);
             print("Contact deleted successfully!");
             break;
         }
@@ -86,7 +87,7 @@ void deleterecord() {
 }
 
 void modifyrecord() {
-    // system("cls");
+    system("cls");
     print("--------------------------------");
     print("MODIFY A RECORD");
     print("--------------------------------");
@@ -96,9 +97,9 @@ void modifyrecord() {
     if (result.empty()){
         print("Roll number not found.");
         pauseProgram();
-return;
+    return;
     }
-deleteRow("record.csv", result[0]);
+    deleteRow("record.csv", result[0]);
     addrecord();
 
 } 
@@ -114,7 +115,7 @@ void viewrecord() {
     switch(Choice3[0]){
         case '1':{
             string RN = getStr("Enter roll number: ");
-            vector<string> result = getRow(RN);
+            vector<string> result = getRow(0);
             if (result.empty()){
                 print("--------------------------------");
                 print("Contact not found.");
@@ -127,7 +128,7 @@ void viewrecord() {
         }
         case '2':{
             string last = getStr("Enter last name: ");
-            vector<string> result = getRow(last);
+            vector<string> result = getRow(1);
             if (result.empty()){
                 print("--------------------------------");
                 print("Contact not found.");
