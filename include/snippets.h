@@ -171,21 +171,12 @@ void pauseProgram() {
     getch();
 }
 
-void checkIfRunnable() {
-    if (system("g++ --version")) {
-        print("g++ is not installed. Please install g++ to run this program.");
-        getch();
-        exit(1);
-    }
-}
 // initializes the csvData. Args : filename, the hashmap to store the data, the indexes used for searching
 void init(std::string content, std::unordered_map<std::string, std::vector<std::string>>& csvData, const std::vector<int>& indexes) {
     std::string contents;
-    checkIfRunnable();
     readFile(content, contents)
         ? print(content + " read successfully.")
         : print(content + " read failed.");
-
     std::vector<std::string> data;
     std::vector<std::string> fields;
     splitData(contents, "\n", data);
@@ -193,12 +184,14 @@ void init(std::string content, std::unordered_map<std::string, std::vector<std::
         // print the first element
         data.erase(data.begin());
     }
-    for (int i = 0; i < data.size() - 1; ++i) {
+    for (int i = 0; i < data.size() - 1; i++) {
         std::vector<std::string> row;
-        // check if the data is empty string
         if (data[i].empty()) continue;
-        splitData(data[i], ",", row);
-        for (int j = 0; j < indexes.size() - 1; ++j) csvData[row[indexes[j]]] = row;
+        splitData(data[i], SEPERATOR, row);
+        for (int j = 0; j < indexes.size(); j++) {
+            print(indexes[j]);
+            csvData[row[indexes[j]]] = row;
+        }
     }
     print("Initializing...");
     print("Initialization complete.");

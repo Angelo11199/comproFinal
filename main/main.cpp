@@ -4,13 +4,6 @@ using namespace std;
 
 #include <iostream>
 #include <vector>
-struct contactData {
-    string name;
-    string phone;
-    string email;
-    string address;
-    string notes;
-};
 void printIntro() {
     print("----------------------------------------------");
     print("|| Welcome to the Contact Management System ||");
@@ -39,6 +32,7 @@ void addContact() {
         print("Contact added successfully!");
         vector<string> row = {name, phone, email, address};
         csvData[name] = row;
+        csvData[email] = row;
     } else
         print("Failed to add contact!");
     pauseProgram();
@@ -47,10 +41,10 @@ void searchContact() {
     system("cls");
     string name = getStr("Enter name or email: ");
     vector<string> result = getRow(name);
-    if (!result.empty())
-        print("Name: " + result[0] + "\nPhone: " + result[1] + "\nEmail: " + result[2] + "\nAddress: " + result[3]);
-    else
+    if (result.empty())
         print("Contact not found.");
+    else
+        print("Name: " + result[0] + "\nPhone: " + result[1] + "\nEmail: " + result[2] + "\nAddress: " + result[3]);
     pauseProgram();
 }
 void deleteContact() {
@@ -60,7 +54,7 @@ void deleteContact() {
     string name = getStr("Enter name or email: ");
     vector<string> result = getRow(name);
     deleteRow("contacts.csv", result[0]);
-    print("Contact added successfully!");
+    print("Contact deleted successfully!");
     pauseProgram();
 }
 bool updateProcess(string noun, vector<string> result, int index) {
@@ -114,7 +108,7 @@ void updateContact() {
 }
 
 int main() {
-    std::vector<int> indexes = {0, 2};
+    vector<int> indexes = {0, 2};
     init("contacts.csv", csvData, indexes);
     printIntro();
     bool exit = false;
