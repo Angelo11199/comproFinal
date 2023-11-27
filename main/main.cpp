@@ -55,7 +55,32 @@ void addrecord() {
 }
 
 void deleterecord() {
-    print("Delete a record");
+    system("cls");
+    print("--------------------------------");
+    print("DELETE A RECORD");
+    print("--------------------------------");
+    print("[1] - Student number");
+    print("[2] - Last name");
+    print("--------------------------------");
+    string Choice1 = getStr("Enter your choice: ");
+    switch(Choice1[0]){
+        case '1':
+            string SN = getStr("Enter student number: ");
+            vector<string> result = getRow(SN);
+            deleteRow("contacts.csv", result[0]);
+            print("Contact added successfully!");
+            break;
+        case '2':
+            string last = getStr("Enter last name: ");
+            vector<string> result = getRow(last);
+            deleteRow("contacts.csv", result[0]);
+            print("Contact added successfully!");
+            break;
+        default:
+            print("Invalid Choice");
+    }
+    pauseProgram();
+    
 }
 
 void modifyrecord() {
@@ -68,7 +93,7 @@ void viewrecord() {
 
 int main() {
     std::vector<int> indexes = {0, 1};
-    init("record.cvs", csvData, indexes);
+    init("record.csv", csvData, indexes);
     bool exit = false;
     while (!exit) {
         system("cls");
@@ -83,7 +108,7 @@ int main() {
         print("--------------------------------");
         string choice = getStr("Enter your choice: ");
 
-        switch (tolower(choice[0])) {
+        switch (choice[0]) {
             case '1':
                 addrecord();
                 break;
