@@ -1,21 +1,22 @@
+#include "../include/snippets.h"
+using namespace std;
 #include <iomanip>
 #include <iostream>
-
-#include "../include/snippets.h"  //ALWAYS ADD THIS
-using namespace std;
+#include <conio.h>
+#include <vector>
 
 void addrecord(){
     print("\nAdd a record");
-    string first = getStr("Enter first name: ");
-    string middle = getStr("Enter middle name (optional): ");
     string last = getStr("Enter last name: ");
-    string roll = getStr("Enter roll number: ");
+    string first = getStr("Enter first name: ");
+    string middle = getStr("Enter middle name: ");
+    string SN = getStr("Enter student number: ");
         while (roll.length() != 9){
             print ("Invalid roll number, try again.");
             roll = getStr("Enter roll number: ");
         }
-    string phone = getStr("Enter phone number: ");
-        while (phone.length() != 11){
+    string CN = getStr("Enter contact number: ");
+        while (phone.length() != 11 || phone.length() != 7){
             print ("Invalid phone number, try again.");
             phone = getStr("Enter phone number: ");
         }
@@ -35,11 +36,16 @@ void addrecord(){
         }
     string course = getStr("Enter course: ");
     string email = getStr("Enter email: ");
-    string fullname = last + ", " + first + " " + middle;
-    print ("Record added successfully!");
-    //add record to file
-    //add if not for unsuccessful
-    return;
+    string FN = last + ", " + first + " " + middle;
+    string record = SN + "|" + FN  + " | " + CN + " | " + year + " | " + course + " | " + email;
+    bool isSuccess = appendFile("record.csv", record);
+    if (isSuccess) {
+        print("Contact added successfully!");
+        vector<string> row = {SN, last, first, middle, CN, year, course, email};
+        csvData[name] = row;
+    } else
+        print("Failed to add contact!");
+    pauseProgram();
 }
 
 void deleterecord(){
@@ -58,7 +64,8 @@ void viewrecord(){
 }
 
 int main() {
-    int x = 0;
+    std::vector<int> indexes = {0, 1};
+    init("record.cvs", csvData, indexes);
     while (x == 0){
     print("\nStudent Record Management System");
     print("A - Add record");
