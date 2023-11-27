@@ -12,13 +12,13 @@ void addrecord(){
     string middle = getStr("Enter middle name: ");
     string SN = getStr("Enter student number: ");
         while (roll.length() != 9){
-            print ("Invalid roll number, try again.");
-            roll = getStr("Enter student number: ");
+            print ("Invalid student number, try again.");
+            SN = getStr("Enter student number: ");
         }
     string CN = getStr("Enter contact number: ");
         while (phone.length() != 11 || phone.length() != 7){
             print ("Invalid phone number, try again.");
-            phone = getStr("Enter phone number: ");
+            CN = getStr("Enter phone number: ");
         }
     string year = getStr("Enter year level (number): ");
         switch (year[0]) {
