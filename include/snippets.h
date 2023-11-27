@@ -1,5 +1,5 @@
 #include <conio.h>
-#define SEPERATOR "|"
+#define SEPERATOR " | "
 #include <fstream>
 #include <iostream>
 #include <string>
