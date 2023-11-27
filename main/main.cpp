@@ -14,10 +14,10 @@ void addrecord() {
     string last = getStr("Enter last name: ");
     string first = getStr("Enter first name: ");
     string middle = getStr("Enter middle name: ");
-    string SN = getStr("Enter student number: ");
-    while (SN.length() != 9) {
-        print("Invalid student number, try again.");
-        SN = getStr("Enter student number: ");
+    string RN = getStr("Enter roll number: ");
+    while (RN.length() != 9) {
+        print("Invalid roll number, try again.");
+        RN = getStr("Enter roll number: ");
     }
     string CN = getStr("Enter contact number: ");
     while (CN.length() != 11 && CN.length() != 7) {
@@ -42,12 +42,12 @@ void addrecord() {
     string course = getStr("Enter course: ");
     string email = getStr("Enter email: ");
     string FN = last + ", " + first + " " + middle;
-    string record = SN + SEPERATOR + FN + SEPERATOR + CN + SEPERATOR + year + SEPERATOR + course + SEPERATOR + email;
+    string record = RN + SEPERATOR + FN + SEPERATOR + CN + SEPERATOR + year + SEPERATOR + course + SEPERATOR + email;
     bool isSuccess = appendFile("record.csv", record);
     if (isSuccess) {
         print("Contact added successfully!");
-        vector<string> row = {SN, last, first, middle, CN, year, course, email};
-        csvData[SN] = row;
+        vector<string> row = {RN, last, first, middle, CN, year, course, email};
+        csvData[RN] = row;
         csvData[last] = row;
     } else
         print("Failed to add contact!");
@@ -59,23 +59,23 @@ void deleterecord() {
     print("--------------------------------");
     print("DELETE A RECORD");
     print("--------------------------------");
-    print("[1] - Student number");
+    print("[1] - Roll number");
     print("[2] - Last name");
     print("--------------------------------");
     string Choice1 = getStr("Enter your choice: ");
     switch(Choice1[0]){
         case '1':{
-            string SN = getStr("Enter student number: ");
+            string SN = getStr("Enter roll number: ");
             vector<string> result = getRow(SN);
-            deleteRow("contacts.csv", result[0]);
-            print("Contact added successfully!");
+            deleteRow("record.csv", result[0]);
+            print("Record deleted successfully!");
             break;
         }
         case '2':{
             string last = getStr("Enter last name: ");
             vector<string> result = getRow(last);
-            deleteRow("contacts.csv", result[0]);
-            print("Contact added successfully!");
+            deleteRow("record.csv", result[0]);
+            print("Contact deleted successfully!");
             break;
         }
         default:{
