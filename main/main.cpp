@@ -6,17 +6,18 @@ using namespace std;
 #include <vector>
 
 void addrecord(){
+    system("cls");
     print("\nAdd a record");
     string last = getStr("Enter last name: ");
     string first = getStr("Enter first name: ");
     string middle = getStr("Enter middle name: ");
     string SN = getStr("Enter student number: ");
-        while (roll.length() != 9){
+        while (SN.length() != 9){
             print ("Invalid student number, try again.");
             SN = getStr("Enter student number: ");
         }
     string CN = getStr("Enter contact number: ");
-        while (phone.length() != 11 || phone.length() != 7){
+        while (CN.length() != 11 || CN.length() != 7){
             print ("Invalid phone number, try again.");
             CN = getStr("Enter phone number: ");
         }
@@ -66,7 +67,9 @@ void viewrecord(){
 int main() {
     std::vector<int> indexes = {0, 1};
     init("record.cvs", csvData, indexes);
-    while (x == 0){
+    bool exit = false;
+    while (!exit) {
+    system("cls");
     print("\nStudent Record Management System");
     print("A - Add record");
     print("D - Delete record");
@@ -89,7 +92,7 @@ int main() {
             viewrecord();
             break;
         case 'q':
-            x = 1;
+            exit = true;
             print("Exit");
             break;
         default:
