@@ -105,6 +105,7 @@ void modifyrecord() {
 } 
 
 void viewrecord() {
+    system("cls");
     print("--------------------------------");
     print("VIEWING RECORD");
     print("--------------------------------");
