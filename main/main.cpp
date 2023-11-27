@@ -8,7 +8,9 @@ using namespace std;
 
 void addrecord() {
     system("cls");
-    print("Add a record");
+    print("--------------------------------");
+    print("ADD A RECORD");
+    print("--------------------------------");
     string last = getStr("Enter last name: ");
     string first = getStr("Enter first name: ");
     string middle = getStr("Enter middle name: ");
@@ -70,12 +72,15 @@ int main() {
     bool exit = false;
     while (!exit) {
         system("cls");
-        print("1Student Record Management System");
+        print("--------------------------------");
+        print("Student Record Management System");
+        print("--------------------------------");
         print("[1] - Add record");
         print("[2] - Delete record");
         print("[3] - Modify record");
         print("[4] - View record");
         print("[5] - QUIT");
+        print("--------------------------------");
         string choice = getStr("Enter your choice: ");
 
         switch (tolower(choice[0])) {
