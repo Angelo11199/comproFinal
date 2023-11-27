@@ -7,7 +7,7 @@ using namespace std;
 
 void addrecord(){
     system("cls");
-    print("\nAdd a record");
+    print("Add a record");
     string last = getStr("Enter last name: ");
     string first = getStr("Enter first name: ");
     string middle = getStr("Enter middle name: ");
@@ -70,7 +70,7 @@ int main() {
     bool exit = false;
     while (!exit) {
         system("cls");
-        print("Student Record Management System");
+        print("1Student Record Management System");
         print("[1] - Add record");
         print("[2] - Delete record");
         print("[3] - Modify record");
