@@ -69,35 +69,35 @@ int main() {
     init("record.cvs", csvData, indexes);
     bool exit = false;
     while (!exit) {
-    system("cls");
-    print("\nStudent Record Management System");
-    print("A - Add record");
-    print("D - Delete record");
-    print("M - Modify record");
-    print("V - View record");
-    print("Q - QUIT");
-    string choice = getStr("Enter your choice: ");
+        system("cls");
+        print("Student Record Management System");
+        print("[1] - Add record");
+        print("[2] - Delete record");
+        print("[3] - Modify record");
+        print("[4] - View record");
+        print("[5] - QUIT");
+        string choice = getStr("Enter your choice: ");
 
-    switch (tolower(choice[0])) {
-        case 'a':
-            addrecord();
-            break;
-        case 'd':
-            deleterecord();
-            break;
-        case 'm':
-            modifyrecord();
-            break;
-        case 'v':
-            viewrecord();
-            break;
-        case 'q':
-            exit = true;
-            print("Exit");
-            break;
-        default:
-            print("Invalid choice");
-    }
+        switch (tolower(choice[0])) {
+            case '1':
+                addrecord();
+                break;
+            case '2':
+                deleterecord();
+                break;
+            case '3':
+                modifyrecord();
+                break;
+            case '4':
+                viewrecord();
+                break;
+            case '5':
+                exit = true;
+                print("Exit");
+                break;
+            default:
+                print("Invalid choice");
+        }
     return 0;
     }
 }
