@@ -67,15 +67,15 @@ void deleterecord() {
         case '1':{
             string SN = getStr("Enter roll number: ");
             vector<string> result = getRow(SN);
-            deleteRow("contacts.csv", result[0]);
-            print("Contact added successfully!");
+            deleteRow("record.csv", result[0]);
+            print("Record deleted successfully!");
             break;
         }
         case '2':{
             string last = getStr("Enter last name: ");
             vector<string> result = getRow(last);
-            deleteRow("contacts.csv", result[0]);
-            print("Contact added successfully!");
+            deleteRow("record.csv", result[0]);
+            print("Contact deleted successfully!");
             break;
         }
         default:{
