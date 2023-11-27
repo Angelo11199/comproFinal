@@ -184,11 +184,11 @@ void init(std::string content, std::unordered_map<std::string, std::vector<std::
         // print the first element
         data.erase(data.begin());
     }
-    for (int i = 0; i < data.size() - 1; i++) {
+    for (int i = 0; i < data.size(); i++) {
         std::vector<std::string> row;
         if (data[i].empty()) continue;
         splitData(data[i], SEPERATOR, row);
-        for (int j = 0; j < indexes.size(); j++) {
+        for (int j = 0; j < indexes.size(); ++j) {
             print(indexes[j]);
             csvData[row[indexes[j]]] = row;
         }

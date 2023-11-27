@@ -19,36 +19,17 @@ struct BankInfo {
     string balance;
     int pin;
 };
-void getAccount() {
-    string accountNumber = getStr("Please enter your account number:");
-    vector<string> accountInfo = getRow(accountNumber);
-    if (accountInfo.size() == 0) {
-        print("Account not found");
-        return;
-    }
-    int pin = getPin();
-    if (accountInfo[7] == to_string(pin)) {
-        print("Account found");
-        // print account info
-        for (auto info : accountInfo) {
-            print(info);
-        }
-        return;
-    }
-    string pin = getStr("Please enter your pin:");
-}
+const string fileName = "bankInfo.csv";
 string loopTillNotNull(string prompt = "") {
-    string userInput = getStr(prompt);
+    string userInput;
     do {
         userInput = getStr(prompt);
-        if (userInput == "") {
-            print("Invalid input. Try again at the beginning.");
-            return;
-        }
+        if (userInput == "")
+            print("Invalid input. Try again.");
     } while (userInput == "");
+
     return userInput;
 }
-const string fileName = "bankInfo.csv";
 int getHour() {
     auto currentTime = std::chrono::system_clock::now();
     std::time_t currentTime_t = std::chrono::system_clock::to_time_t(currentTime);
@@ -67,6 +48,11 @@ int getPin() {
     string pinLength = "";
     char* p;
     do {
+        if (pinLength.length() == PINDIGITS) {
+            print("");
+            print("Pin entered successfully");
+            break;
+        }
         char digit = getch();
         printLn("*");
         if (isdigit(digit)) {
@@ -76,14 +62,8 @@ int getPin() {
             pinLength = "";
             continue;
         }
-        if (pinLength.length() == PINDIGITS) {
-            print("");
-            print("Pin entered successfully");
-            cin.ignore();
-            return stoi(pinLength);
-        }
     } while (pinLength.length() != PINDIGITS);
-    return 0;
+    return stoi(pinLength);
 }
 bool createAccount() {
     BankInfo bankInfo;
@@ -94,38 +74,45 @@ bool createAccount() {
     while (bankInfo.email.find("@") == string::npos);
     do {
         bankInfo.accountType = loopTillNotNull("Please enter your account type:");
-        if (bankInfo.accountType != "Checking" && bankInfo.accountType != "Savings")
+        for (auto& c : bankInfo.accountType) c = tolower(c);
+        if (bankInfo.accountType != "checking" && bankInfo.accountType != "savings")
             print("Invalid input. Try again at the beginning.");
-    } while (bankInfo.accountType != "Checking" && bankInfo.accountType != "Savings");
-
-    bankInfo.balance = loopTillNotNull("Please enter your balance:");
-    string firstPin, secondPin;
+    } while (bankInfo.accountType != "checking" && bankInfo.accountType != "savings");
+    bankInfo.balance = loopTillNotNull("Please enter your initial deposit:");
+    int firstPin, secondPin;
     do {
         print("Please set your pin:");
         firstPin = getPin();
-        print("");
+        print(firstPin);
         print("enter your pin again:");
         secondPin = getPin();
         if (firstPin != secondPin) {
             print("Pin does not match. Try again");
         }
-        bankInfo.pin = stoi(firstPin);
+        bankInfo.pin = firstPin;
     } while (firstPin != secondPin);
     bankInfo.accountNumber = to_string(rand() % 1000000);
     if (getRow(bankInfo.accountNumber).size() != 0) {
         bankInfo.accountNumber = to_string(rand() % 1000000);
     }
     string accountInfo = bankInfo.name + SEPERATOR + bankInfo.address + SEPERATOR + bankInfo.phone + SEPERATOR + bankInfo.email + SEPERATOR + bankInfo.accountNumber + SEPERATOR + bankInfo.accountType + SEPERATOR + bankInfo.balance + SEPERATOR + to_string(bankInfo.pin);
-    appendFile(fileName, accountInfo);
+    bool isSuccess = appendFile(fileName, accountInfo);
+    if (!isSuccess)
+        print("Account creation failed");
+    else {
+        print("Account creation successful");
+    }
     return true;
 }
-bool readAccount() {
+void readAccount() {
     string accountNumber = getStr("Please enter your account number:");
     vector<string> accountInfo = getRow(accountNumber);
+    print(accountInfo.size());
     if (accountInfo.size() == 0) {
         print("Account not found");
         return;
     }
+    print("Please enter your pin for verification");
     int pin = getPin();
     if (accountInfo[7] == to_string(pin)) {
         print("Account found");
@@ -135,36 +122,43 @@ bool readAccount() {
         }
         return;
     }
-    string pin = getStr("Please enter your pin:");
 }
+
 bool updateAccount() {
+    string choice;
     string accountNumber = getStr("Please enter your account number:");
     BankInfo bankInfo;
     vector<string> accountInfo = getRow(accountNumber);
     if (accountInfo.size() == 0) {
         print("Account not found");
-        return;
+        return false;
     }
     print("Please enter your pin for verification");
-    string choice;
     int pin = getPin();
-    if (accountInfo[7] == to_string(pin)) {
-        print("Account found");
-        for (auto info : accountInfo) {
-            print(info);
+    if (accountInfo[7] != to_string(pin)) {
+        int tries = 0;
+        while (tries < 3) {
+            print("Invalid pin. Try again");
+            pin = getPin();
+            if (accountInfo[7] == to_string(pin)) break;
+            tries++;
         }
-        print("What would you like to update?");
-        print("1. Name");
-        print("2. Address");
-        print("3. Phone");
-        print("4. Email");
-        print("5. Account Type");
-        print("6. Balance");
-        print("7. Pin");
-        choice = getStr("Your choice:");
-        while (choice.length() == 0 || tolower(choice[0]) != 'y' || tolower(choice[0]) != 'n')
-            choice = getStr("Your choice:");
+        if (tries == 3) print("Too many tries. Try again later");
+        return false;
     }
+    print("Account found");
+    for (auto info : accountInfo) print(info);
+    print("What would you like to update?");
+    print("1. Name");
+    print("2. Address");
+    print("3. Phone");
+    print("4. Email");
+    print("5. Account Type");
+    print("6. Balance");
+    print("7. Pin");
+    choice = getStr("Your choice:");
+    while (choice.length() == 0 || tolower(choice[0]) != 'y' || tolower(choice[0]) != 'n')
+        choice = getStr("Your choice:");
     print("what would you like to update?");
     print("1. Name");
     print("2. Address");
@@ -225,7 +219,7 @@ bool deleteAccount() {
     vector<string> accountInfo = getRow(accountNumber);
     if (accountInfo.size() == 0) {
         print("Account not found");
-        return;
+        return false;
     }
     print("Please enter your pin for verification");
     int pin = getPin();
@@ -242,22 +236,22 @@ bool deleteAccount() {
             choice = getStr("Your choice:");
 
         deleteRow(fileName, accountNumber);
-        return;
+        return true;
     }
-    string pin = getStr("Please enter your pin:");
+    return true;
 }
 
 int main() {
     printIntro("========================================");
     printIntro("||Welcome to the Bank Management System||");
     printIntro("========================================");
-    pauseProgram();
+    // pauseProgram();
     vector<int> indexes = {0, 4};
     init(fileName, csvData, indexes);
     // create an input that doesn't show what is being typed
     bool exit = false;
     while (!exit) {
-        system("cls");
+        // system("cls");
         int hours = getHour();
         if (hours >= 0 && hours < 12)
             printLn("Good Morning!");
@@ -282,8 +276,10 @@ int main() {
                 readAccount();
                 break;
             case 'u':
+                updateAccount();
                 break;
             case 'd':
+                deleteAccount();
                 break;
             case 'q':
                 exit = true;
