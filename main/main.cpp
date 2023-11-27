@@ -64,20 +64,23 @@ void deleterecord() {
     print("--------------------------------");
     string Choice1 = getStr("Enter your choice: ");
     switch(Choice1[0]){
-        case '1':
+        case '1':{
             string SN = getStr("Enter student number: ");
             vector<string> result = getRow(SN);
             deleteRow("contacts.csv", result[0]);
             print("Contact added successfully!");
             break;
-        case '2':
+        }
+        case '2':{
             string last = getStr("Enter last name: ");
             vector<string> result = getRow(last);
             deleteRow("contacts.csv", result[0]);
             print("Contact added successfully!");
             break;
-        default:
+        }
+        default:{
             print("Invalid Choice");
+        }
     }
     pauseProgram();
     
