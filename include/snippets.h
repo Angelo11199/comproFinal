@@ -184,12 +184,14 @@ void init(std::string content, std::unordered_map<std::string, std::vector<std::
         // print the first element
         data.erase(data.begin());
     }
-    for (int i = 0; i < data.size() - 1; ++i) {
+    for (int i = 0; i < data.size() - 1; i++) {
         std::vector<std::string> row;
-        // check if the data is empty string
         if (data[i].empty()) continue;
-        splitData(data[i], ",", row);
-        for (int j = 0; j < indexes.size() - 1; ++j) csvData[row[indexes[j]]] = row;
+        splitData(data[i], SEPERATOR, row);
+        for (int j = 0; j < indexes.size(); j++) {
+            print(indexes[j]);
+            csvData[row[indexes[j]]] = row;
+        }
     }
     print("Initializing...");
     print("Initialization complete.");
