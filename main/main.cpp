@@ -119,7 +119,7 @@ void viewrecord() {
             vector<string> result = getRow(RN);
             if (result.empty()){
                 print("--------------------------------");
-                print("Contact not found.");
+                print("Record not found.");
                 print("--------------------------------");}
             else{
                 print("--------------------------------");
@@ -132,7 +132,7 @@ void viewrecord() {
             vector<string> result = getRow(last);
             if (result.empty()){
                 print("--------------------------------");
-                print("Contact not found.");
+                print("Record not found.");
                 print("--------------------------------");}
             else{
                 print("--------------------------------");
