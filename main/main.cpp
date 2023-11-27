@@ -13,7 +13,7 @@ void addrecord(){
     string SN = getStr("Enter student number: ");
         while (roll.length() != 9){
             print ("Invalid roll number, try again.");
-            roll = getStr("Enter roll number: ");
+            roll = getStr("Enter student number: ");
         }
     string CN = getStr("Enter contact number: ");
         while (phone.length() != 11 || phone.length() != 7){
@@ -42,7 +42,7 @@ void addrecord(){
     if (isSuccess) {
         print("Contact added successfully!");
         vector<string> row = {SN, last, first, middle, CN, year, course, email};
-        csvData[name] = row;
+        csvData[SN] = row;
     } else
         print("Failed to add contact!");
     pauseProgram();
