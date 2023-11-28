@@ -5,6 +5,9 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+
+std::unordered_map<std::string, std::vector<std::string>> csvData;
+
 // prints in a new line
 template <typename T>
 void print(T Value) {
@@ -51,8 +54,20 @@ bool readFile(std::string fileName, std::string& content) {
         }
         file.close();
         return true;
-    } else
+    } else {
+        print("File not found! creating file...");
+        std::ofstream file;
+        file.open(fileName);
+        if (file.is_open()) {
+            print("File created successfully!");
+            file << "sep=" + std::string(SEPERATOR) + "\n";
+            file.close();
+            return true;
+        } else {
+            return false;
+        }
         return false;
+    }
 }
 
 // adds data to the file. returns true if successful
@@ -78,11 +93,9 @@ void splitData(std::string str, std::string delimiter, std::vector<std::string>&
     }
     vec.push_back(str);
 }
-std::unordered_map<std::string, std::vector<std::string>>
-    csvData;
 
 std::vector<std::string> getRow(const std::string& value) {
-    std::vector<std::string> contacts;
+    std::vector<std::string> record;
     // read csvData and check if the name is in the csvData
     if (csvData.find(value) != csvData.end()) {
         return csvData[value];
@@ -98,7 +111,7 @@ bool deleteRow(std::string fileName, std::string rowName) {
     // loop through the data and add the indexes element to the hashmap
     for (int i = 0; i < data.size() - 1; i++) {
         std::vector<std::string> row;
-        splitData(data[i], ",", row);
+        splitData(data[i], SEPERATOR, row);
         if (row[0] == rowName) {
             data.erase(data.begin() + i);
             std::string newContent;
@@ -126,12 +139,12 @@ bool updateRow(std::string fileName, std::string colName, std::string newValue, 
     splitData(contents, "\n", data);
     for (int i = 0; i < data.size() - 1; i++) {
         std::vector<std::string> row;
-        splitData(data[i], ",", row);
+        splitData(data[i], SEPERATOR, row);
         if (row[0] == colName) {
             row[indexToUpdate] = newValue;
             data[i] = "";
             for (int j = 0; j < row.size() - 1; j++) {
-                data[i] += row[j] + ",";
+                data[i] += row[j] + SEPERATOR;
             }
             data[i] += row[row.size() - 1];
             std::string newContent;
@@ -141,6 +154,7 @@ bool updateRow(std::string fileName, std::string colName, std::string newValue, 
             std::ofstream file;
             file.open(fileName);
             if (file.is_open()) {
+                i == 0 && file << "sep=" + std::string(SEPERATOR) + "\n";
                 file << newContent;
                 file.close();
                 return true;
@@ -151,6 +165,11 @@ bool updateRow(std::string fileName, std::string colName, std::string newValue, 
     }
     return true;
 }
+void pauseProgram() {
+    print("press any key to continue...");
+    getch();
+}
+
 // initializes the csvData. Args : filename, the hashmap to store the data, the indexes used for searching
 void init(std::string content, std::unordered_map<std::string, std::vector<std::string>>& csvData, const std::vector<int>& indexes) {
     std::string contents;
@@ -158,21 +177,21 @@ void init(std::string content, std::unordered_map<std::string, std::vector<std::
         ? print(content + " read successfully.")
         : print(content + " read failed.");
     std::vector<std::string> data;
-    splitData(contents, "\n", data);
     std::vector<std::string> fields;
-    // loop through the data and add the indexes element to the hashmap
+    splitData(contents, "\n", data);
+    if (data[0].substr(0, 4) == "sep=") {
+        // print the first element
+        data.erase(data.begin());
+    }
     for (int i = 0; i < data.size() - 1; i++) {
         std::vector<std::string> row;
-        splitData(data[i], ",", row);
+        if (data[i].empty()) continue;
+        splitData(data[i], SEPERATOR, row);
         for (int j = 0; j < indexes.size(); j++) {
+            print(indexes[j]);
             csvData[row[indexes[j]]] = row;
         }
     }
     print("Initializing...");
     print("Initialization complete.");
-}
-
-void pauseProgram() {
-    print("press any key to continue...");
-    getch();
 }
