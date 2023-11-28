@@ -86,21 +86,142 @@ void deleterecord() {
     
 }
 
+bool updateProcess(string noun, vector<string> result, int index) {
+    string newValue = getStr("Enter new" + noun + ":");
+    bool isSuccess = updateRow("record.csv", result[0], newValue, index);
+    result[index] = isSuccess ? newValue : result[index];
+    csvData[result[0]] = result;
+    return isSuccess;
+}
+
 void modifyrecord() {
     system("cls");
+    bool isSuccess = false;
     print("--------------------------------");
     print("MODIFY A RECORD");
     print("--------------------------------");
-    string RN = getStr ("Enter roll number: ");
-    vector<string> result = getRow(RN);
-    //print (result[0]);
-    if (result.empty()){
-        print("Roll number not found.");
-        pauseProgram();
-    return;
+    print("[1] - Roll number");
+    print("[2] - Last name");
+    print("--------------------------------");
+    string Choice2 = getStr("Enter your choice: ");
+    switch(Choice2[0]){
+        case '1':{
+            string RN = getStr("Enter roll number: ");
+            vector<string> result = getRow(RN);
+            readFile("record.csv", result[0]);
+            system("cls");
+            if (result.empty()){
+                print("--------------------------------");
+                print("Record not found.");
+                print("--------------------------------");}
+            else{
+                print("--------------------------------");
+                print("PICK THE SUBJECT YOU WANT TO MODIFY");
+                print("--------------------------------");
+                print("Roll Number: " + result[0] + "\nLast Name: " + result[1] + "\nFirst Name: " + result[2] + "\nMiddle Name: " + result[3] + "\nContact Number: " + result[4] + "\nYear Level: " + result[5] + "\nCourse: " + result[6] + "\nEmail: " + result[7] );
+                print("--------------------------------");}
+                string Choice21 = getStr("Enter your choice: ");
+                while(!isSuccess){
+                    switch(Choice21[0]){
+                        case '1':{
+                            isSuccess = updateProcess("RN", result, 0);
+                            break;
+                        }
+                        case '2':{
+                            isSuccess = updateProcess("last", result, 1);
+                            break;
+                        }
+                        case '3':{
+                            isSuccess = updateProcess("first", result, 2);
+                            break;
+                        }
+                        case '4':{
+                            isSuccess = updateProcess("middle", result, 3);
+                            break;
+                        }
+                        case '5':{
+                            isSuccess = updateProcess("contact", result, 4);
+                            break;
+                        }
+                        case '6':{
+                            isSuccess = updateProcess("year", result, 5);
+                            break;
+                        }
+                        case '7':{
+                            isSuccess = updateProcess("course", result, 6);
+                            break;
+                        }
+                        case '8':{
+                            isSuccess = updateProcess("email", result, 7);
+                            break;
+                        }
+                    }
+                }
+            break;
+        }
+        case '2':{
+            string last = getStr("Enter last name: ");
+            vector<string> result = getRow(last);
+            readFile("record.csv", result[1]);
+            system("cls");
+            if (result.empty()){
+                print("--------------------------------");
+                print("Record not found.");
+                print("--------------------------------");}
+            else{
+                print("--------------------------------");
+                print("PICK THE SUBJECT YOU WANT TO MODIFY");
+                print("--------------------------------");
+                print("Roll Number: " + result[0] + "\nLast Name: " + result[1] + "\nFirst Name: " + result[2] + "\nMiddle Name: " + result[3] + "\nContact Number: " + result[4] + "\nYear Level: " + result[5] + "\nCourse: " + result[6] + "\nEmail: " + result[7] );
+                print("--------------------------------");}
+                string Choice21 = getStr("Enter your choice: ");
+                while(!isSuccess){
+                    switch(Choice21[0]){
+                        case '1':{
+                            isSuccess = updateProcess("RN", result, 0);
+                            break;
+                        }
+                        case '2':{
+                            isSuccess = updateProcess("last", result, 1);
+                            break;
+                        }
+                        case '3':{
+                            isSuccess = updateProcess("first", result, 2);
+                            break;
+                        }
+                        case '4':{
+                            isSuccess = updateProcess("middle", result, 3);
+                            break;
+                        }
+                        case '5':{
+                            isSuccess = updateProcess("contact", result, 4);
+                            break;
+                        }
+                        case '6':{
+                            isSuccess = updateProcess("year", result, 5);
+                            break;
+                        }
+                        case '7':{
+                            isSuccess = updateProcess("course", result, 6);
+                            break;
+                        }
+                        case '8':{
+                            isSuccess = updateProcess("email", result, 7);
+                            break;
+                        }
+                    }
+                }
+            break;
+        }
+        default:{
+            print("Invalid Choice");
+        }
     }
-    deleteRow("record.csv", result[0]);
-    addrecord();
+    if (isSuccess)
+        print("Contact updated successfully!");
+    else
+        print("Failed to update contact!");
+    pauseProgram();
 
 } 
 
@@ -118,13 +239,14 @@ void viewrecord() {
             string RN = getStr("Enter roll number: ");
             vector<string> result = getRow(RN);
             readFile("record.csv", result[0]);
+            system("cls");
             if (result.empty()){
                 print("--------------------------------");
                 print("Record not found.");
                 print("--------------------------------");}
             else{
                 print("--------------------------------");
-                print("Roll Number: " + result[0] + "\nLast Name" + result[1] + "\nFirst Name" + result[2] + "\nMiddle Name" + result[3] + "\nContact Number" + result[4] + "\nYear Level" + result[5] + "\nCourse" + result[6] + "\nEmail" + result[7] );
+                print("Roll Number: " + result[0] + "\nLast Name: " + result[1] + "\nFirst Name: " + result[2] + "\nMiddle Name: " + result[3] + "\nContact Number: " + result[4] + "\nYear Level: " + result[5] + "\nCourse: " + result[6] + "\nEmail: " + result[7] );
                 print("--------------------------------");}
             break;
         }
@@ -132,6 +254,7 @@ void viewrecord() {
             string last = getStr("Enter last name: ");
             vector<string> result = getRow(last);
             readFile("record.csv", result[1]);
+            system("cls");
             if (result.empty()){
                 print("--------------------------------");
                 print("Record not found.");
