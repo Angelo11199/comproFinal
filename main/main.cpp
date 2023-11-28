@@ -95,7 +95,7 @@ bool createAccount() {
     if (getRow(bankInfo.accountNumber).size() != 0) {
         bankInfo.accountNumber = to_string(rand() % 1000000);
     }
-    string accountInfo = bankInfo.name + SEPERATOR + bankInfo.address + SEPERATOR + bankInfo.phone + SEPERATOR + bankInfo.email + SEPERATOR + bankInfo.accountNumber + SEPERATOR + bankInfo.accountType + SEPERATOR + bankInfo.balance + SEPERATOR + to_string(bankInfo.pin);
+    string accountInfo = bankInfo.name + SEPERATOR + bankInfo.address + SEPERATOR + bankInfo.phone + SEPERATOR + bankInfo.email + SEPERATOR + bankInfo.accountNumber + SEPERATOR + bankInfo.accountType + SEPERATOR + bankInfo.balance + SEPERATOR + to_string(bankInfo.pin) + "\n";
     bool isSuccess = appendFile(fileName, accountInfo);
     if (!isSuccess)
         print("Account creation failed");
@@ -149,53 +149,37 @@ bool updateAccount() {
     print("Account found");
     for (auto info : accountInfo) print(info);
     print("What would you like to update?");
-    print("1. Name");
-    print("2. Address");
-    print("3. Phone");
-    print("4. Email");
-    print("5. Account Type");
-    print("6. Balance");
-    print("7. Pin");
+    print("[P] Pin");
+    print("[E] Email");
+    print("[N] Name");
+    print("[T] Phone");
+    print("[A] Address");
     choice = getStr("Your choice:");
     while (choice.length() == 0 || tolower(choice[0]) != 'y' || tolower(choice[0]) != 'n')
         choice = getStr("Your choice:");
-    print("what would you like to update?");
-    print("1. Name");
-    print("2. Address");
-    print("3. Phone");
-    print("4. Email");
-    print("5. Account Type");
-    print("6. Balance");
-    print("7. Pin");
-    choice = getStr("Your choice:");
-    while (choice.length() == 0 || tolower(choice[0]) != 'y' || tolower(choice[0]) != 'n')
-        choice = getStr("Your choice:");
-    switch (choice[0]) {
-        case 1:
+    switch (tolower(choice[0])) {
+        case 'n': {
+            bankInfo.name = loopTillNotNull("Please enter your new name:");
+            updateRow(fileName, accountInfo[0], bankInfo.name, 0);
+        } break;
+        case 'a':
+            bankInfo.address = loopTillNotNull("Please enter your new address:");
+            updateRow(fileName, accountInfo[0], bankInfo.address, 1);
             break;
-        case 2:
+        case 't':
+            bankInfo.phone = loopTillNotNull("Please enter your new phone number:");
+            updateRow(fileName, accountInfo[0], bankInfo.phone, 2);
             break;
-        case 3:
-            break;
-        case 4:
+        case 'e':
             do {
                 bankInfo.email = loopTillNotNull("Please enter your new email:");
                 if (bankInfo.email.find("@") == string::npos)
-                    print("Invalid input. Try again at the beginning.");
+                    print("Invalid input. Try again.");
             } while (bankInfo.email.find("@") == string::npos);
+            updateRow(fileName, accountInfo[0], bankInfo.email, 3);
             break;
-        case 5:
-            do {
-                bankInfo.accountType = loopTillNotNull("Please enter your account type:");
-                if (bankInfo.accountType != "Checking" && bankInfo.accountType != "Savings")
-                    print("Invalid input. Try again at the beginning.");
-            } while (bankInfo.accountType != "Checking" && bankInfo.accountType != "Savings");
-            break;
-        case 6:
-            bankInfo.balance = loopTillNotNull("Please enter your balance:");
-            break;
-        case 7: {
-            string firstPin, secondPin;
+        case 'p': {
+            int firstPin, secondPin;
             do {
                 print("Please set your pin:");
                 firstPin = getPin();
@@ -205,7 +189,9 @@ bool updateAccount() {
                 if (firstPin != secondPin) {
                     print("Pin does not match. Try again");
                 }
-                bankInfo.pin = stoi(firstPin);
+                bankInfo.pin = firstPin;
+                updateRow(fileName, accountInfo[0], to_string(firstPin), 6);
+
             } while (firstPin != secondPin);
         } break;
         default:
@@ -234,8 +220,9 @@ bool deleteAccount() {
         string choice = getStr("Your choice:");
         while (choice.length() == 0 || tolower(choice[0]) != 'y' || tolower(choice[0]) != 'n')
             choice = getStr("Your choice:");
-
+        if (tolower(choice[0]) == 'n') return false;
         deleteRow(fileName, accountNumber);
+
         return true;
     }
     return true;
@@ -266,6 +253,7 @@ int main() {
         print("R. Get an existing account");
         print("U. Update an existing account");
         print("D. Delete an existing account");
+        print("W - Withdraw");
         print("Q. Quit");
         string choice = getStr("Your choice:");
         switch (tolower(choice[0])) {
@@ -281,6 +269,36 @@ int main() {
             case 'd':
                 deleteAccount();
                 break;
+            case 'w': {
+                string accountNumber = getStr("Please enter your account number:");
+                vector<string> accountInfo = getRow(accountNumber);
+                if (accountInfo.size() == 0) {
+                    print("Account not found");
+                    return false;
+                }
+                print("Please enter your pin for verification");
+                int pin = getPin();
+                if (accountInfo[7] != to_string(pin)) {
+                    int tries = 0;
+                    while (tries < 3) {
+                        print("Invalid pin. Try again");
+                        pin = getPin();
+                        if (accountInfo[7] == to_string(pin)) break;
+                        tries++;
+                    }
+                    if (tries == 3) print("Too many tries. Try again later");
+                    return false;
+                }
+                print("Account found");
+                for (auto info : accountInfo) print(info);
+                int withdraw = getNum("Please enter withdraw amount:");
+                if (stoi(accountInfo[6]) < withdraw) {
+                    print("Insufficient funds");
+                    break;
+                }
+                updateRow(fileName, accountInfo[0], to_string(stoi(accountInfo[6]) - withdraw), 6);
+                break;
+            }
             case 'q':
                 exit = true;
                 break;
