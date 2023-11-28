@@ -40,7 +40,7 @@ void addrecord(){
     }
     string course = getStr("Enter course: ");
     string email = getStr("Enter email: ");
-    string FN = last + ", " + first + " " + middle;
+    string FN = last + SEPERATOR + first + SEPERATOR + middle;
     string record = RN + SEPERATOR + FN + SEPERATOR + CN + SEPERATOR + year + SEPERATOR + course + SEPERATOR + email + "\n";
     bool isSuccess = appendFile("record.csv", record);
     if (isSuccess) {
@@ -117,12 +117,12 @@ void viewrecord() {
         case '1':{
             string RN = getStr("Enter roll number: ");
             vector<string> result = getRow(RN);
+            readFile("record.csv", result[0]);
             if (result.empty()){
                 print("--------------------------------");
                 print("Record not found.");
                 print("--------------------------------");}
             else{
-                readFile("record.csv", result[0]);
                 print("--------------------------------");
                 print("Roll Number: " + result[0] + "\nLast Name" + result[1] + "\nFirst Name" + result[2] + "\nMiddle Name" + result[3] + "\nContact Number" + result[4] + "\nYear Level" + result[5] + "\nCourse" + result[6] + "\nEmail" + result[7] );
                 print("--------------------------------");}
@@ -131,12 +131,12 @@ void viewrecord() {
         case '2':{
             string last = getStr("Enter last name: ");
             vector<string> result = getRow(last);
+            readFile("record.csv", result[1]);
             if (result.empty()){
                 print("--------------------------------");
                 print("Record not found.");
                 print("--------------------------------");}
             else{
-                readFile("record.csv", result[1]);
                 print("--------------------------------");
                 print("Roll Number: " + result[0] + "\nLast Name" + result[1] + "\nFirst Name" + result[2] + "\nMiddle Name" + result[3] + "\nContact Number" + result[4] + "\nYear Level" + result[5] + "\nCourse" + result[6] + "\nEmail" + result[7] );
                 print("--------------------------------");}
