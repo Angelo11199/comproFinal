@@ -122,6 +122,7 @@ void viewrecord() {
                 print("Record not found.");
                 print("--------------------------------");}
             else{
+                readFile("record.csv", result[0]);
                 print("--------------------------------");
                 print("Roll Number: " + result[0] + "\nLast Name" + result[1] + "\nFirst Name" + result[2] + "\nMiddle Name" + result[3] + "\nContact Number" + result[4] + "\nYear Level" + result[5] + "\nCourse" + result[6] + "\nEmail" + result[7] );
                 print("--------------------------------");}
@@ -135,6 +136,7 @@ void viewrecord() {
                 print("Record not found.");
                 print("--------------------------------");}
             else{
+                readFile("record.csv", result[1]);
                 print("--------------------------------");
                 print("Roll Number: " + result[0] + "\nLast Name" + result[1] + "\nFirst Name" + result[2] + "\nMiddle Name" + result[3] + "\nContact Number" + result[4] + "\nYear Level" + result[5] + "\nCourse" + result[6] + "\nEmail" + result[7] );
                 print("--------------------------------");}
