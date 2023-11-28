@@ -124,6 +124,7 @@ void modifyrecord() {
                 print("Record not found.");
                 print("--------------------------------");}
             else{
+                pauseProgram();
                 system("cls");
                 print("--------------------------------");
                 print("PICK THE SUBJECT YOU WANT TO MODIFY");
@@ -134,35 +135,35 @@ void modifyrecord() {
                 while(!isSuccess){
                     switch(Choice21[0]){
                         case '1':{
-                            isSuccess = updateProcess("Roll number", result, 0);
+                            isSuccess = updateProcess(" Roll number", result, 0);
                             break;
                         }
                         case '2':{
-                            isSuccess = updateProcess("Last name", result, 1);
+                            isSuccess = updateProcess(" Last name", result, 1);
                             break;
                         }
                         case '3':{
-                            isSuccess = updateProcess("First name", result, 2);
+                            isSuccess = updateProcess(" First name", result, 2);
                             break;
                         }
                         case '4':{
-                            isSuccess = updateProcess("Middle name", result, 3);
+                            isSuccess = updateProcess(" Middle name", result, 3);
                             break;
                         }
                         case '5':{
-                            isSuccess = updateProcess("Contact number", result, 4);
+                            isSuccess = updateProcess(" Contact number", result, 4);
                             break;
                         }
                         case '6':{
-                            isSuccess = updateProcess("Year level", result, 5);
+                            isSuccess = updateProcess(" Year level", result, 5);
                             break;
                         }
                         case '7':{
-                            isSuccess = updateProcess("Course", result, 6);
+                            isSuccess = updateProcess(" Course", result, 6);
                             break;
                         }
                         case '8':{
-                            isSuccess = updateProcess("Email", result, 7);
+                            isSuccess = updateProcess(" Email", result, 7);
                             break;
                         }
                     }
@@ -179,6 +180,7 @@ void modifyrecord() {
                 print("Record not found.");
                 print("--------------------------------");}
             else{
+                pauseProgram();
                 system("cls");
                 print("--------------------------------");
                 print("PICK THE SUBJECT YOU WANT TO MODIFY");
@@ -189,35 +191,35 @@ void modifyrecord() {
                 while(!isSuccess){
                     switch(Choice21[0]){
                         case '1':{
-                            isSuccess = updateProcess2("Roll number", result, 0);
+                            isSuccess = updateProcess2(" Roll number", result, 0);
                             break;
                         }
                         case '2':{
-                            isSuccess = updateProcess2("Last name", result, 1);
+                            isSuccess = updateProcess2(" Last name", result, 1);
                             break;
                         }
                         case '3':{
-                            isSuccess = updateProcess2("First name", result, 2);
+                            isSuccess = updateProcess2(" First name", result, 2);
                             break;
                         }
                         case '4':{
-                            isSuccess = updateProcess2("Middle name", result, 3);
+                            isSuccess = updateProcess2(" Middle name", result, 3);
                             break;
                         }
                         case '5':{
-                            isSuccess = updateProcess2("Contact number", result, 4);
+                            isSuccess = updateProcess2(" Contact number", result, 4);
                             break;
                         }
                         case '6':{
-                            isSuccess = updateProcess2("Year level", result, 5);
+                            isSuccess = updateProcess2(" Year level", result, 5);
                             break;
                         }
                         case '7':{
-                            isSuccess = updateProcess2("Course", result, 6);
+                            isSuccess = updateProcess2(" Course", result, 6);
                             break;
                         }
                         case '8':{
-                            isSuccess = updateProcess2("Email", result, 7);
+                            isSuccess = updateProcess2(" Email", result, 7);
                             break;
                         }
                     }
@@ -250,6 +252,7 @@ void viewrecord() {
             string RN = getStr("Enter roll number: ");
             vector<string> result = getRow(RN);
             readFile("record.csv", result[0]);
+            pauseProgram();
             system("cls");
             if (result.empty()){
                 print("--------------------------------");
@@ -266,6 +269,7 @@ void viewrecord() {
             vector<string> result = getRow(last);
             readFile("record.csv", result[1]);
             system("cls");
+            pauseProgram();
             if (result.empty()){
                 print("--------------------------------");
                 print("Record not found.");
