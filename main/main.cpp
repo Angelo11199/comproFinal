@@ -105,6 +105,7 @@ bool updateProcess2(string noun, vector<string> result, int index) {
 void modifyrecord() {
     system("cls");
     bool isSuccess = false;
+    string newValue;
     print("--------------------------------");
     print("MODIFY A RECORD");
     print("--------------------------------");
