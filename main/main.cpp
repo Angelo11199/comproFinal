@@ -94,6 +94,14 @@ bool updateProcess(string noun, vector<string> result, int index) {
     return isSuccess;
 }
 
+bool updateProcess2(string noun, vector<string> result, int index) {
+    string newValue = getStr("Enter new" + noun + ":");
+    bool isSuccess = updateRow("record.csv", result[1], newValue, index);
+    result[index] = isSuccess ? newValue : result[index];
+    csvData[result[1]] = result;
+    return isSuccess;
+}
+
 void modifyrecord() {
     system("cls");
     bool isSuccess = false;
@@ -115,10 +123,11 @@ void modifyrecord() {
                 print("Record not found.");
                 print("--------------------------------");}
             else{
+                system("cls");
                 print("--------------------------------");
                 print("PICK THE SUBJECT YOU WANT TO MODIFY");
                 print("--------------------------------");
-                print("[1]Roll Number: " + result[0] + "\n[2]Last Name: " + result[1] + "\n[3]First Name: " + result[2] + "\n[4]Middle Name: " + result[3] + "\n[5]Contact Number: " + result[4] + "\n[6]Year Level: " + result[5] + "\n[7]Course: " + result[6] + "\n[8]Email: " + result[7] );
+                print("[1] - Roll Number: " + result[0] + "\n[2] - Last Name: " + result[1] + "\n[3] - First Name: " + result[2] + "\n[4] - Middle Name: " + result[3] + "\n[5] - Contact Number: " + result[4] + "\n[6] - Year Level: " + result[5] + "\n[7] - Course: " + result[6] + "\n[8] - Email: " + result[7] );
                 print("--------------------------------");}
                 string Choice21 = getStr("Enter your choice: ");
                 while(!isSuccess){
@@ -169,44 +178,45 @@ void modifyrecord() {
                 print("Record not found.");
                 print("--------------------------------");}
             else{
+                system("cls");
                 print("--------------------------------");
                 print("PICK THE SUBJECT YOU WANT TO MODIFY");
                 print("--------------------------------");
-                print("[1]Roll Number: " + result[0] + "\n[2]Last Name: " + result[1] + "\n[3]First Name: " + result[2] + "\n[4]Middle Name: " + result[3] + "\n[5]Contact Number: " + result[4] + "\n[6]Year Level: " + result[5] + "\n[7]Course: " + result[6] + "\n[8]Email: " + result[7] );
+                print("[1] - Roll Number: " + result[0] + "\n[2] - Last Name: " + result[1] + "\n[3] - First Name: " + result[2] + "\n[4] - Middle Name: " + result[3] + "\n[5] - Contact Number: " + result[4] + "\n[6] - Year Level: " + result[5] + "\n[7] - Course: " + result[6] + "\n[8] - Email: " + result[7] );
                 print("--------------------------------");}
                 string Choice21 = getStr("Enter your choice: ");
                 while(!isSuccess){
                     switch(Choice21[0]){
                         case '1':{
-                            isSuccess = updateProcess("Roll number", result, 0);
+                            isSuccess = updateProcess2("Roll number", result, 0);
                             break;
                         }
                         case '2':{
-                            isSuccess = updateProcess("Last name", result, 1);
+                            isSuccess = updateProcess2("Last name", result, 1);
                             break;
                         }
                         case '3':{
-                            isSuccess = updateProcess("First name", result, 2);
+                            isSuccess = updateProcess2("First name", result, 2);
                             break;
                         }
                         case '4':{
-                            isSuccess = updateProcess("Middle name", result, 3);
+                            isSuccess = updateProcess2("Middle name", result, 3);
                             break;
                         }
                         case '5':{
-                            isSuccess = updateProcess("Contact number", result, 4);
+                            isSuccess = updateProcess2("Contact number", result, 4);
                             break;
                         }
                         case '6':{
-                            isSuccess = updateProcess("Year level", result, 5);
+                            isSuccess = updateProcess2("Year level", result, 5);
                             break;
                         }
                         case '7':{
-                            isSuccess = updateProcess("Course", result, 6);
+                            isSuccess = updateProcess2("Course", result, 6);
                             break;
                         }
                         case '8':{
-                            isSuccess = updateProcess("Email", result, 7);
+                            isSuccess = updateProcess2("Email", result, 7);
                             break;
                         }
                     }
