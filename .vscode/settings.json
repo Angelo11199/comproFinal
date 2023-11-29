@@ -78,6 +78,10 @@
 		"xlocmes": "cpp",
 		"xlocmon": "cpp",
 		"xloctime": "cpp",
-		"xtree": "cpp"
+		"xtree": "cpp",
+		"numbers": "cpp",
+		"semaphore": "cpp",
+		"span": "cpp",
+		"variant": "cpp"
 	}
 }
