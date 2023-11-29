@@ -86,7 +86,7 @@ void createAccount() {
     bankInfo.name = loopTillNotNull("Please enter your name:");
     bankInfo.address = loopTillNotNull("Please enter your address:");
     bankInfo.phone = getStr("Please enter your phone number:");
-    while (bankInfo.phone.length() != 10) {
+    while (bankInfo.phone.length() != 11) {
         print("Invalid phone number. Try again");
         bankInfo.phone = getStr("Please enter your phone number:");
     }
