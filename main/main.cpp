@@ -9,51 +9,7 @@ using namespace std;
 #include <vector>
 #define PINDIGITS 6
 
-void addstock(){
-    system("cls");
-    print("---------------------------------");
-    print("ADDING NEW STOCK");
-    print("---------------------------------");
-    string barcode = getStr("Enter Bar Code: ");
-    string name = getStr("Enter Product Name: ");
-    print("---------------------------------");
-    print("[1] - Food");
-    print("[2] - Drink");
-    print("[3] - Clothing");
-    print("[4] - Medical Supply");
-    print("---------------------------------");
-    type:
-    string type = getStr("Enter the item type: ");
-    switch(type[0]){
-        case '1':
-            type = "Food";
-            break;
-        case '2':
-            type = "Drink";
-            break;
-        case '3':
-            type = "Clothing";
-            break;
-        case '4':
-            type = "Medical Supply";
-            break;
-        default:
-            print("Invalid Choice");
-            pauseProgram();
-            goto type;
-    }
-    string stock = getStr("Enter the Number Stock in the Inventory: ");
-    string inventory = barcode + SEPERATOR + name + SEPERATOR + type + SEPERATOR + stock + SEPERATOR + "\n";
-    bool isSuccess = appendFile("inventory.csv", inventory);
-    if (isSuccess) {
-        print("Contact added successfully!");
-        vector<string> row = {barcode, name, type, stock};
-        csvData[barcode] = row;
-        csvData[type] = row;
-    } else
-        print("Failed to add contact!");
-    pauseProgram();
-}
+void addstock();
 
 void removestock(){
     system("cls");
@@ -234,4 +190,51 @@ int main(){
     std::vector<int> indexes = {0, 1};
     init("inventory.csv", csvData, indexes);
     return 0;
+}
+
+void addStock(){
+    main();
+    system("cls");
+    print("---------------------------------");
+    print("ADDING NEW STOCK");
+    print("---------------------------------");
+    string barcode = getStr("Enter Bar Code: ");
+    string name = getStr("Enter Product Name: ");
+    print("---------------------------------");
+    print("[1] - Food");
+    print("[2] - Drink");
+    print("[3] - Clothing");
+    print("[4] - Medical Supply");
+    print("---------------------------------");
+    type:
+    string type = getStr("Enter the item type: ");
+    switch(type[0]){
+        case '1':
+            type = "Food";
+            break;
+        case '2':
+            type = "Drink";
+            break;
+        case '3':
+            type = "Clothing";
+            break;
+        case '4':
+            type = "Medical Supply";
+            break;
+        default:
+            print("Invalid Choice");
+            pauseProgram();
+            goto type;
+    }
+    string stock = getStr("Enter the Number Stock in the Inventory: ");
+    string inventory = barcode + SEPERATOR + name + SEPERATOR + type + SEPERATOR + stock + SEPERATOR + "\n";
+    bool isSuccess = appendFile("inventory.csv", inventory);
+    if (isSuccess) {
+        print("Contact added successfully!");
+        vector<string> row = {barcode, name, type, stock};
+        csvData[barcode] = row;
+        csvData[type] = row;
+    } else
+        print("Failed to add contact!");
+    pauseProgram();
 }
