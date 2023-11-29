@@ -9,41 +9,6 @@ using namespace std;
 #include <vector>
 #define PINDIGITS 6
 
-void viewstock(){
-    system("cls");
-    print("---------------------------------");
-    print("VIEWING INVENTORY");
-    print("---------------------------------");
-    print("[1] - Find Specific Product");
-    print("[2] - View All");
-    print("[3] - Go Back");
-    print("---------------------------------");
-    string choice2 = getStr("Enter your choice: ");
-    switch(choice2[0]){
-        case '1':
-            removestock();
-            break;
-        case '2':
-            exit = false;
-            print("Closing Program......");
-        case '3':
-            goto start;
-            break;
-        default:
-            print("Invalid Choice");
-            pauseProgram();
-            viewstock();
-            break;
-    }
-}
-
-void updatestock(){
-    system("cls");
-    print("---------------------------------");
-    print("UPDATING RECORD");
-    print("---------------------------------");
-}
-
 void addstock(){
     system("cls");
     print("---------------------------------");
@@ -76,20 +41,18 @@ void addstock(){
             print("Invalid Choice");
             pauseProgram();
             goto type;
-
     }
     string stock = getStr("Enter the Number Stock in the Inventory: ");
-    tring record = rollNumber + SEPERATOR + fullName + SEPERATOR + contact + SEPERATOR + yearLevel + SEPERATOR + course + SEPERATOR + email + "\n";
-    bool isSuccess = appendFile(fileName, record);
+    string inventory = barcode + SEPERATOR + name + SEPERATOR + type + SEPERATOR + stock + SEPERATOR + "\n";
+    bool isSuccess = appendFile("inventory.csv", inventory);
     if (isSuccess) {
         print("Contact added successfully!");
-        vector<string> row = {rollNumber, last, first, middle, contact, yearLevel, course, email};
+        vector<string> row = {barcode, name, type, stock};
         csvData[barcode] = row;
         csvData[type] = row;
     } else
         print("Failed to add contact!");
     pauseProgram();
-
 }
 
 void removestock(){
@@ -97,13 +60,137 @@ void removestock(){
     print("---------------------------------");
     print("REMOVING STOCK");
     print("---------------------------------");
-    string
+    string barcode = getStr("Enter Barcode: ");
+    vector<string> result = getRow(barcode);
+    deleteRow("inventory.csv", result[0]);
+    print("Record deleted successfully!");
+    pauseProgram();
 }
 
-int main(){
-    start:
-    std::vector<int> indexes = {0, 1};
-    init("inventory.csv", csvData, indexes);
+void viewtype(){
+    system("cls");
+    print("---------------------------------");
+    print("[1] - Food");
+    print("[2] - Drink");
+    print("[3] - Clothing");
+    print("[4] - Medical Supply");
+    print("---------------------------------");
+    type1:
+    string type = getStr("Enter the item type: ");
+    switch(type[0]){
+        case '1':
+            type = "Food";
+            vector<string> result = getRow(type);
+            if (result.empty()) {
+                print("--------------------------------");
+                print("Record not found.");
+                print("--------------------------------");
+                pauseProgram();
+            } else {
+                print("--------------------------------");
+                print(result[1] + result[2]);
+                print("--------------------------------");
+            }
+            break;
+        case '2':
+            type = "Drink";
+            vector<string> result = getRow(type);
+            if (result.empty()) {
+                print("--------------------------------");
+                print("Record not found.");
+                print("--------------------------------");
+                pauseProgram();
+            } else {
+                print("--------------------------------");
+                print(result[1] + result[2]);
+                print("--------------------------------");
+            }
+            break;
+        case '3':
+            type = "Clothing";
+            vector<string> result = getRow(type);
+            if (result.empty()) {
+                print("--------------------------------");
+                print("Record not found.");
+                print("--------------------------------");
+                pauseProgram();
+            } else {
+                print("--------------------------------");
+                print(result[1] + result[2]);
+                print("--------------------------------");
+            }
+            break;
+        case '4':
+            type = "Medical Supply";
+            vector<string> result = getRow(type);
+            if (result.empty()) {
+                print("--------------------------------");
+                print("Record not found.");
+                print("--------------------------------");
+                pauseProgram();
+            } else {
+                print("--------------------------------");
+                print(result[1] + result[2]);
+                print("--------------------------------");
+            }
+            break;
+        default:
+            print("Invalid Choice");
+            pauseProgram();
+            goto type1;
+    }
+}
+
+void viewstock(){
+    system("cls");
+    print("-----------------------------------");
+    print("VIEWING INVENTORY");
+    print("-----------------------------------");
+    print("[1] - View Specific Product");
+    print("[2] - View Specific Type of Product");
+    print("[3] - Go Back");
+    print("-----------------------------------");
+    string choice2 = getStr("Enter your choice: ");
+    switch(choice2[0]){
+        case '1':
+            string barcode = getStr("Enter Bar Code: ");
+            vector<string> result = getRow(barcode);
+            pauseProgram();
+            system("cls");
+            if (result.empty()) {
+                print("--------------------------------");
+                print("Record not found.");
+                print("--------------------------------");
+                pauseProgram();
+                viewstock();
+                break;
+            } else {
+                print("--------------------------------");
+                print("Bar Code: " + result[0] + "\nProduct Name: " + result[1] + "\nType: " + result[2] + "\nMiddle Name: " + result[3]);
+                print("--------------------------------");
+            }
+            break;
+        case '2':
+            viewtype();
+            break;
+        case '3':
+            break;
+        default:
+            print("Invalid Choice");
+            pauseProgram();
+            viewstock();
+            break;
+    }    
+}
+
+void updatestock(){
+    system("cls");
+    print("---------------------------------");
+    print("UPDATING RECORD");
+    print("---------------------------------");
+}
+
+void start(){
     bool exit = false;
     while(!exit){
         system("cls");
@@ -137,9 +224,14 @@ int main(){
             default:
                 print("Invalid Choice");
                 pauseProgram();
-                goto start;
+                start();
                 break;
         }
     }
+}
+
+int main(){
+    std::vector<int> indexes = {0, 1};
+    init("inventory.csv", csvData, indexes);
     return 0;
 }
