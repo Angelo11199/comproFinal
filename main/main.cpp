@@ -296,8 +296,8 @@ int main() {
         print("R. Get an existing account");
         print("U. Update an existing account");
         print("D. Delete an existing account");
-        print("W - Withdraw");
-        print("E - Deposit");
+        print("W. Withdraw");
+        print("E. Deposit");
         print("Q. Quit");
         string choice = getStr("Your choice:");
         switch (tolower(choice[0])) {
