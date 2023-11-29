@@ -1,11 +1,12 @@
 #include <conio.h>
-#define SEPERATOR " | "
+
 #include <fstream>
 #include <iostream>
 #include <string>
 #include <unordered_map>
 #include <vector>
-
+#define SEPERATOR "|"
+// Search data here
 std::unordered_map<std::string, std::vector<std::string>> csvData;
 
 // prints in a new line
@@ -95,7 +96,7 @@ void splitData(std::string str, std::string delimiter, std::vector<std::string>&
 }
 
 std::vector<std::string> getRow(const std::string& value) {
-    std::vector<std::string> record;
+    std::vector<std::string> contacts;
     // read csvData and check if the name is in the csvData
     if (csvData.find(value) != csvData.end()) {
         return csvData[value];
@@ -140,28 +141,20 @@ bool updateRow(std::string fileName, std::string colName, std::string newValue, 
     for (int i = 0; i < data.size() - 1; i++) {
         std::vector<std::string> row;
         splitData(data[i], SEPERATOR, row);
-        if (row[0] == colName) {
-            row[indexToUpdate] = newValue;
-            data[i] = "";
-            for (int j = 0; j < row.size() - 1; j++) {
-                data[i] += row[j] + SEPERATOR;
-            }
-            data[i] += row[row.size() - 1];
-            std::string newContent;
-            for (int j = 0; j < data.size() - 1; j++) {
-                newContent += data[j] + "\n";
-            }
-            std::ofstream file;
-            file.open(fileName);
-            if (file.is_open()) {
-                i == 0 && file << "sep=" + std::string(SEPERATOR) + "\n";
-                file << newContent;
-                file.close();
-                return true;
-            } else {
-                return false;
-            }
-        }
+        if (row[0] != colName) continue;
+        row[indexToUpdate] = newValue;
+        data[i] = "";
+        for (int j = 0; j < row.size() - 1; j++) data[i] += row[j] + SEPERATOR;
+        data[i] += row[row.size() - 1];
+        std::string newContent;
+        for (int j = 0; j < data.size() - 1; j++) newContent += data[j] + "\n";
+        std::ofstream file;
+        file.open(fileName);
+        if (!file.is_open()) return false;
+        i == 0 && file << "sep=" + std::string(SEPERATOR) + "\n";
+        file << newContent;
+        file.close();
+        return true;
     }
     return true;
 }
@@ -173,6 +166,7 @@ void pauseProgram() {
 // initializes the csvData. Args : filename, the hashmap to store the data, the indexes used for searching
 void init(std::string content, std::unordered_map<std::string, std::vector<std::string>>& csvData, const std::vector<int>& indexes) {
     std::string contents;
+    print("Initializing...");
     readFile(content, contents)
         ? print(content + " read successfully.")
         : print(content + " read failed.");
@@ -180,18 +174,15 @@ void init(std::string content, std::unordered_map<std::string, std::vector<std::
     std::vector<std::string> fields;
     splitData(contents, "\n", data);
     if (data[0].substr(0, 4) == "sep=") {
-        // print the first element
         data.erase(data.begin());
     }
-    for (int i = 0; i < data.size() - 1; i++) {
+    for (int i = 0; i < data.size(); i++) {
         std::vector<std::string> row;
         if (data[i].empty()) continue;
         splitData(data[i], SEPERATOR, row);
-        for (int j = 0; j < indexes.size(); j++) {
-            print(indexes[j]);
+        for (int j = 0; j < indexes.size(); ++j) {
             csvData[row[indexes[j]]] = row;
         }
     }
-    print("Initializing...");
     print("Initialization complete.");
 }
