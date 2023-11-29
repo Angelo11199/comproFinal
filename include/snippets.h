@@ -5,7 +5,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
-#define SEPERATOR "|"
+#define SEPERATOR " | "
 // Search data here
 std::unordered_map<std::string, std::vector<std::string>> csvData;
 
