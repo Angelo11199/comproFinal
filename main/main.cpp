@@ -114,7 +114,7 @@ int main() {
     bool exit = false;
     while (!exit) {
         system("cls");
-        string choice = getStr("Select an option: \n[C] Add a contact\n[R] Search a contact\n[U] Update a contact\n[D] Delete a contact\n[Q]Exit\nEnter your choice: ");
+        string choice = getStr("Select an option: \n[C] Add a contact\n[R] Search a contact\n[U] Update a contact\n[D] Delete a contact\n[Q] Exit\nEnter your choice: ");
         switch (tolower(choice[0])) {
             case 'c':
                 addContact();
