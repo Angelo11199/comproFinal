@@ -4,6 +4,10 @@
 using namespace std;
 #include "../include/systems.h"
 int main() {
-    startBankManagement();
+    while (true) {
+        startBankManagement();
+        startContactManagement();
+        system("cls");
+    }
     return 0;
 }
