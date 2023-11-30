@@ -11,7 +11,7 @@ using namespace std;
 
 void start();
 
-void removestock(){
+void removestock() {
     system("cls");
     print("---------------------------------");
     print("REMOVING STOCK");
@@ -24,7 +24,7 @@ void removestock(){
     start();
 }
 
-void viewstock(){
+void viewstock() {
     system("cls");
     print("-----------------------------------");
     print("VIEWING INVENTORY");
@@ -34,8 +34,8 @@ void viewstock(){
     print("[3] - Go Back");
     print("-----------------------------------");
     string choice2 = getStr("Enter your choice: ");
-    switch(choice2[0]){
-        case '1':{
+    switch (choice2[0]) {
+        case '1': {
             string barcode = getStr("Enter Bar Code: ");
             vector<string> result = getRow(barcode);
             pauseProgram();
@@ -57,7 +57,6 @@ void viewstock(){
             break;
         }
         case '2':{
-            system("cls");
             print("--------------------------------");
             string contents;
             readFile("inventory.csv", contents);
@@ -66,17 +65,17 @@ void viewstock(){
             pauseProgram();
             break;
         }
-        case '3':{
+        case '3': {
             start();
             break;
         }
-        default:{
+        default: {
             print("Invalid Choice");
             pauseProgram();
             viewstock();
             break;
         }
-    }    
+    }
 }
 
 bool updateProcess(string noun, vector<string> result, int index) {
@@ -88,7 +87,7 @@ bool updateProcess(string noun, vector<string> result, int index) {
     return isSuccess;
 }
 
-void updatestock(){
+void updatestock() {
     system("cls");
     bool isSuccess = false;
     string newValue;
@@ -96,7 +95,7 @@ void updatestock(){
     print("UPDATING RECORD");
     print("---------------------------------");
     string barcode = getStr("Enter the Bar Code: ");
-   vector<string> result = getRow(barcode);
+    vector<string> result = getRow(barcode);
     system("cls");
     if (result.empty()) {
         print("--------------------------------");
@@ -104,8 +103,7 @@ void updatestock(){
         print("--------------------------------");
         start();
         pauseProgram();
-    }
-    else {
+    } else {
         // system("cls");
         print("--------------------------------");
         print("PICK THE SUBJECT YOU WANT TO MODIFY");
@@ -143,12 +141,11 @@ void updatestock(){
             }
         }
     }
-    if (isSuccess){
+    if (isSuccess) {
         print("--------------------------------");
         print("Updated Successfully!");
         print("--------------------------------");
-    }
-    else{
+    } else {
         print("--------------------------------");
         print("Failed to update inventory!");
         print("--------------------------------");
@@ -157,14 +154,13 @@ void updatestock(){
     pauseProgram();
 }
 
-
-void addstock(){
+void addstock() {
     system("cls");
     print("---------------------------------");
     print("ADDING NEW STOCK");
     print("---------------------------------");
     string barcode = getStr("Enter Bar Code(4-digit): ");
-    while(barcode.length() != 4){
+    while (barcode.length() != 4) {
         print("Invalid Bar Code, try again.");
         barcode = getStr("Enter Bar Code: ");
     }
@@ -176,7 +172,7 @@ void addstock(){
     print("[4] - Medical Supply");
     print("---------------------------------");
     string type = getStr("Enter the item type: ");
-    switch(type[0]){
+    switch (type[0]) {
         case '1':
             type = "Food";
             break;
@@ -208,9 +204,9 @@ void addstock(){
     start();
 }
 
-void start(){
+void start() {
     bool exit = false;
-    while(!exit){
+    while (!exit) {
         system("cls");
         print("---------------------------------");
         print("W.E.G.A STORAGE MANAGEMENT SYSTEM");
@@ -222,7 +218,7 @@ void start(){
         print("[5] - Quit");
         print("---------------------------------");
         string choice1 = getStr("Enter your choice: ");
-        switch(choice1[0]){
+        switch (choice1[0]) {
             case '1':
                 viewstock();
                 break;
@@ -237,7 +233,7 @@ void start(){
                 break;
             case '5':
                 exit = false;
-                print("Closing Program......");
+                print("Closing Program...");
                 break;
             default:
                 print("Invalid Choice");
@@ -248,7 +244,7 @@ void start(){
     }
 }
 
-int main(){
+int main() {
     std::vector<int> indexes = {0, 1};
     init("inventory.csv", csvData, indexes);
     start();
