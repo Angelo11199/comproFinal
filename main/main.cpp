@@ -80,7 +80,7 @@ void viewstock() {
 }
 
 bool updateProcess(string noun, vector<string> result, int index) {
-    string newValue = getStr("Enter new " + noun + ":");
+    string newValue = getStr("Enter New " + noun + ": ");
     bool isSuccess = updateRow("inventory.csv", result[0], newValue, index);
     result[index] = isSuccess ? newValue : result[index];
     csvData[result[0]] = result;
@@ -116,19 +116,19 @@ void updatestock() {
     while (!isSuccess) {
         switch (tolower(choice[0])) {
             case '1': {
-                isSuccess = updateProcess(" Bar Code", result, 0);
+                isSuccess = updateProcess("Bar Code", result, 0);
                 break;
             }
             case '2': {
-                isSuccess = updateProcess(" Product Name", result, 1);
+                isSuccess = updateProcess("Product Name", result, 1);
                 break;
             }
             case '3': {
-                isSuccess = updateProcess(" Type", result, 2);
+                isSuccess = updateProcess("Type", result, 2);
                 break;
             }
             case '4': {
-                isSuccess = updateProcess(" Number of Stocks", result, 3);
+                isSuccess = updateProcess("Number of Stocks", result, 3);
                 break;
             }
             case 'q': {
@@ -210,7 +210,7 @@ void start() {
     while (!exit) {
         system("cls");
         print("---------------------------------");
-        print("W.E.G.A STORAGE MANAGEMENT SYSTEM");
+        print("W.E.G.A INVENTORY MANAGEMENT SYSTEM");
         print("---------------------------------");
         print("[1] - View Stocks");
         print("[2] - Update Stock");
