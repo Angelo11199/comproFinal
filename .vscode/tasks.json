@@ -5,17 +5,21 @@
 			"label": "C/C++: g++.exe build active file",
 			"command": "C:\\msys64\\ucrt64\\bin\\g++.exe",
 			"args": [
-				"-fdiagnostics-color=always",
+				"-fdiagnostics-color=always ",
 				"-g",
 				"${file}",
 				"${fileDirname}/../include/*.h",
 				"-o",
-				"${fileDirname}/../builds/${fileBasenameNoExtension}.exe"
+				"${fileDirname}/../builds/${fileBasenameNoExtension}.exe",
+				"-static-libgcc",
+				"-static-libstdc++"
 			],
 			"options": {
 				"cwd": "${fileDirname}"
 			},
-			"problemMatcher": ["$gcc"],
+			"problemMatcher": [
+				"$gcc"
+			],
 			"group": {
 				"kind": "build",
 				"isDefault": true
