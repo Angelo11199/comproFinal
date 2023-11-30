@@ -5,7 +5,7 @@ using namespace std;
 #include <iomanip>
 #include <iostream>
 #include <vector>
-const string fileName = "studentRecords.csv";
+const string studentRecordFile = "studentRecords.csv";
 void addrecord() {
     // system("cls");
     string last = getStr("Enter last name: ");
@@ -40,7 +40,7 @@ void addrecord() {
     string email = getStr("Enter email: ");
     string fullName = last + SEPERATOR + first + SEPERATOR + middle;
     string record = rollNumber + SEPERATOR + fullName + SEPERATOR + contact + SEPERATOR + yearLevel + SEPERATOR + course + SEPERATOR + email + "\n";
-    bool isSuccess = appendFile(fileName, record);
+    bool isSuccess = appendFile(studentRecordFile, record);
     if (isSuccess) {
         print("Contact added successfully!");
         vector<string> row = {rollNumber, last, first, middle, contact, yearLevel, course, email};
@@ -64,14 +64,14 @@ void deleterecord() {
         case '1': {
             string RN = getStr("Enter roll number: ");
             vector<string> result = getRow(RN);
-            deleteRow(fileName, result[0]);
+            deleteRow(studentRecordFile, result[0]);
             print("Record deleted successfully!");
             break;
         }
         case '2': {
             string last = getStr("Enter last name: ");
             vector<string> result = getRow(last);
-            deleteRow(fileName, result[1]);
+            deleteRow(studentRecordFile, result[1]);
             print("Contact deleted successfully!");
             break;
         }
@@ -84,7 +84,7 @@ void deleterecord() {
 
 bool updateProcess(string noun, vector<string> result, int index) {
     string newValue = getStr("Enter new" + noun + ":");
-    bool isSuccess = updateRow(fileName, result[0], newValue, index);
+    bool isSuccess = updateRow(studentRecordFile, result[0], newValue, index);
     result[index] = isSuccess ? newValue : result[index];
     csvData[result[0]] = result;
     csvData[result[1]] = result;
@@ -234,7 +234,7 @@ void viewrecord() {
 
 int startStudentRecords() {
     std::vector<int> indexes = {0, 1};
-    init(fileName, csvData, indexes);
+    init(studentRecordFile, csvData, indexes);
     bool exit = false;
     while (!exit) {
         // system("cls");

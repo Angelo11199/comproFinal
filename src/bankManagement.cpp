@@ -3,7 +3,7 @@
 
 #include "../include/snippets.h"  //ALWAYS ADD THIS
 using namespace std;
-const string fileName = "accounts.csv";
+const string bankFileName = "accounts.csv";
 struct Account {
     string name, address, accountType;
     double amount;
@@ -23,7 +23,7 @@ void deposit(vector<string> account, double amount) {
         double balance = stoi(account[3]);
         balance += amount;
         print("Deposit successful. New balance: $" + to_string(balance));
-        updateRow(fileName, account[0], to_string(balance), 3);
+        updateRow(bankFileName, account[0], to_string(balance), 3);
         csvData[account[0]][3] = to_string(balance);
     } else
         print("Invalid deposit amount. Please enter a positive amount.");
@@ -35,7 +35,7 @@ void withdraw(vector<string> acc, double amount) {
     if (amount > 0 && amount <= balance) {
         balance -= amount;
         print("Withdrawal successful. New balance: $" + to_string(balance));
-        updateRow(fileName, acc[0], to_string(balance), 3);
+        updateRow(bankFileName, acc[0], to_string(balance), 3);
         csvData[acc[0]][3] = to_string(balance);
     } else {
         print("Invalid withdrawal amount or insufficient funds.");
@@ -62,7 +62,7 @@ string createAccount() {
     newAccount.accountType = getStr("Enter your account type: \n");
     newAccount.amount = getNum("Enter amount: \n");
     string content = newAccount.name + SEPERATOR + newAccount.address + SEPERATOR + newAccount.accountType + SEPERATOR + to_string(newAccount.amount);
-    isSuccess = appendFile(fileName, content + "\n");
+    isSuccess = appendFile(bankFileName, content + "\n");
     if (isSuccess) {
         csvData[newAccount.name] = {newAccount.name, newAccount.address, newAccount.accountType, to_string(newAccount.amount)};
         print("Account created successfully!");
@@ -70,9 +70,9 @@ string createAccount() {
     }
     return newAccount.name;
 }
-int startProgram() {
+int startBankManagement() {
     vector<int> indexes = {0};
-    init(fileName, csvData, indexes);
+    init(bankFileName, csvData, indexes);
     string answer;
     bool exited = false;
     vector<string> account;
@@ -101,7 +101,7 @@ int startProgram() {
                 case 5: {
                     print("Exiting the program. Thank you!");
                     exited = true;
-                    exit(1);
+                    break;
                 }
                 default: {
                     print("Invalid choice. Please try again.");
@@ -110,8 +110,8 @@ int startProgram() {
         }
     } else {
         createAccount();
+        exited = false;
     }
-    exited = false;
     while (!exited) {
         print("Choose an option:");
         print("1. Show account details");

@@ -57,7 +57,7 @@ void deleteContact() {
     print("Contact deleted successfully!");
     pauseProgram();
 }
-bool updateProcess(string noun, vector<string> result, int index) {
+bool updateContactProcess(string noun, vector<string> result, int index) {
     string newValue = getStr("Enter new" + noun + ":");
     bool isSuccess = updateRow("contacts.csv", result[0], newValue, index);
     result[index] = isSuccess ? newValue : result[index];
@@ -81,16 +81,16 @@ void updateContact() {
     while (!isSuccess) {
         switch (tolower(choice)) {
             case 'n':
-                isSuccess = updateProcess("name", result, 0);
+                isSuccess = updateContactProcess("name", result, 0);
                 break;
             case 'p':
-                isSuccess = updateProcess("phone number", result, 1);
+                isSuccess = updateContactProcess("phone number", result, 1);
                 break;
             case 'e':
-                isSuccess = updateProcess("email", result, 2);
+                isSuccess = updateContactProcess("email", result, 2);
                 break;
             case 'd':
-                isSuccess = updateProcess("address", result, 3);
+                isSuccess = updateContactProcess("address", result, 3);
                 break;
             case 'b':
                 isSuccess = true;
