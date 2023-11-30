@@ -1,10 +1,16 @@
 <!-- header -->
 
-# README
+# Final Exam/Project in Computer Programming online
+- The following are divided into different branches. Each branch is a different project. Here are the project branches
+    - [Student Record Management system](https://github.com/Angelo11199/comproFinal/tree/student-record-management-system)
+    - [Bank Management system](https://github.com/Angelo11199/comproFinal/tree/bank-management-system)
+    - [Contact Management system](https://github.com/Angelo11199/comproFinal/tree/contact-management-system)
 
-Please use camelCase (camelCase). first letter is small. example: `thisIsCamelCase`
+- We used boilerplate codes to make it easier for you to code. [Click here to see the boilerplate codes](#boilerplate-codes) made by yours trully, Ice cream. (Angelo11199)
+
+
 <!-- create a easy navigation -->
-Table of Contents
+Table of Contents (Coding guides)
 =================
 - [prerequisites](#prerequisites)
 - [boilerplate codes](#boilerplate-codes)
