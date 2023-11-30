@@ -123,8 +123,8 @@ void modifyrecord() {
                 print("[1] - Roll Number: " + result[0] + "\n[2] - Last Name: " + result[1] + "\n[3] - First Name: " + result[2] + "\n[4] - Middle Name: " + result[3] + "\n[5] - Contact Number: " + result[4] + "\n[6] - Year Level: " + result[5] + "\n[7] - Course: " + result[6] + "\n[8] - Email: " + result[7]);
                 print("--------------------------------");
             }
-            string choice = getStr("Enter your choice: ");
             while (!isSuccess) {
+                string choice = getStr("Enter your choice: ");
                 switch (choice[0]) {
                     case '1': {
                         isSuccess = updateProcess(" Roll number", result, 0);

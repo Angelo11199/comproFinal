@@ -77,8 +77,8 @@ void updateContact() {
         pauseProgram();
         return;
     }
-    char choice = getStr("Select to update: \n [N] Update name\n [P] Update phone number\n [E] Update email\n [A] Update address\n [B] Go back \nYour choice:")[0];
     while (!isSuccess) {
+        char choice = getStr("Select to update: \n [N] Update name\n [P] Update phone number\n [E] Update email\n [A] Update address\n [B] Go back \nYour choice:")[0];
         switch (tolower(choice)) {
             case 'n':
                 isSuccess = updateContactProcess("name", result, 0);
@@ -89,7 +89,7 @@ void updateContact() {
             case 'e':
                 isSuccess = updateContactProcess("email", result, 2);
                 break;
-            case 'd':
+            case 'a':
                 isSuccess = updateContactProcess("address", result, 3);
                 break;
             case 'b':
