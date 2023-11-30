@@ -57,6 +57,7 @@ void viewstock() {
             break;
         }
         case '2':{
+            system("cls");
             print("--------------------------------");
             string contents;
             readFile("inventory.csv", contents);
