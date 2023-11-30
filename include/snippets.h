@@ -5,8 +5,9 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
-#define SEPERATOR "|"
-// Search data here
+#define SEPERATOR "|"  // the seperator used in the csv file to seperate the data
+
+// the hashmap to store the data
 std::unordered_map<std::string, std::vector<std::string>> csvData;
 
 // prints in a new line
@@ -36,15 +37,16 @@ double getNum(std::string prompt = "") {
     } while (true);
     return 0;
 }
+
 // gets a string from the user
 std::string getStr(std::string prompt = "") {
     std::string s;
     std::cout << prompt;
-    // std::cin.ignore();
     getline(std::cin, s);
     return s;
 }
-// reads the file and returns in string content
+
+// reads the file and returns in string content memory address. returns true if successful
 bool readFile(std::string fileName, std::string& content) {
     std::ifstream file;
     file.open(fileName);
@@ -74,8 +76,10 @@ bool readFile(std::string fileName, std::string& content) {
 // adds data to the file. returns true if successful
 bool appendFile(std::string fileName, std::string content) {
     std::ofstream file;
+    // open the file in append mode
     file.open(fileName, std::ios::app);
     if (file.is_open()) {
+        // write the content to the file
         file << content;
         file.close();
         return true;
@@ -85,6 +89,7 @@ bool appendFile(std::string fileName, std::string content) {
 }
 // splits the string into a vector
 void splitData(std::string str, std::string delimiter, std::vector<std::string>& vec) {
+    // split the string into a vector (just like an array but can change size)
     size_t pos = 0;
     std::string token;
     while ((pos = str.find(delimiter)) != std::string::npos) {
@@ -94,15 +99,17 @@ void splitData(std::string str, std::string delimiter, std::vector<std::string>&
     }
     vec.push_back(str);
 }
-
+// gets the row from the csvData. Args : search value
 std::vector<std::string> getRow(const std::string& value) {
     std::vector<std::string> contacts;
     // read csvData and check if the name is in the csvData
     if (csvData.find(value) != csvData.end()) {
         return csvData[value];
     }
+    // if not found return empty vector
     return {};
 }
+
 // deletes the row. Args : filename, the name of the first column
 bool deleteRow(std::string fileName, std::string rowName) {
     std::string contents;
@@ -138,6 +145,7 @@ bool updateRow(std::string fileName, std::string colName, std::string newValue, 
     readFile(fileName, contents);
     std::vector<std::string> data;
     splitData(contents, "\n", data);
+    // loop through the data and add the indexes element to row vector
     for (int i = 0; i < data.size() - 1; i++) {
         std::vector<std::string> row;
         splitData(data[i], SEPERATOR, row);
@@ -148,6 +156,7 @@ bool updateRow(std::string fileName, std::string colName, std::string newValue, 
         data[i] += row[row.size() - 1];
         std::string newContent;
         for (int j = 0; j < data.size() - 1; j++) newContent += data[j] + "\n";
+        // write the new content to the file
         std::ofstream file;
         file.open(fileName);
         if (!file.is_open()) return false;
@@ -158,6 +167,7 @@ bool updateRow(std::string fileName, std::string colName, std::string newValue, 
     }
     return true;
 }
+// pauses the program and waits for the user to press a key before continuing
 void pauseProgram() {
     print("press any key to continue...");
     getch();
@@ -173,9 +183,11 @@ void init(std::string content, std::unordered_map<std::string, std::vector<std::
     std::vector<std::string> data;
     std::vector<std::string> fields;
     splitData(contents, "\n", data);
+    // checks if the first line is sep=SEPERATOR
     if (data[0].substr(0, 4) == "sep=") {
         data.erase(data.begin());
     }
+    // loop through the data and add the indexes element to the hashmap
     for (int i = 0; i < data.size(); i++) {
         std::vector<std::string> row;
         if (data[i].empty()) continue;

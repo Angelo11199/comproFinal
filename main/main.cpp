@@ -7,7 +7,7 @@ using namespace std;
 #include <string>
 #include <thread>
 #include <vector>
-#define PINDIGITS 6
+#define PINDIGITS 6  // total number of digits in the pin
 // craeting the structure for the bank info
 struct BankInfo {
     string name;
@@ -19,8 +19,10 @@ struct BankInfo {
     string balance;
     int pin;
 };
+const string fileName = "bankInfo.csv";  // name of the file
+
+// prints the banking information minus the pin.
 void printInfo(vector<string> bankInfo) {
-    string info = "";
     print("Name: " + bankInfo[0]);
     print("Address: " + bankInfo[1]);
     print("Phone: " + bankInfo[2]);
@@ -28,9 +30,12 @@ void printInfo(vector<string> bankInfo) {
     print("Account Number: " + bankInfo[4]);
     print("Account Type: " + bankInfo[5]);
     print("Balance: " + bankInfo[6]);
-    print(info);
 }
-const string fileName = "bankInfo.csv";
+/*
+    This function loops until the user enters a non empty string.
+    It takes in a prompt which is displayed to the user.
+    If no prompt is given, it will not display anything.
+*/
 string loopTillNotNull(string prompt = "") {
     string userInput;
     do {
@@ -41,6 +46,7 @@ string loopTillNotNull(string prompt = "") {
 
     return userInput;
 }
+/* This function checks the current time and returns the hour using a 24 hour clock. */
 int getHour() {
     auto currentTime = std::chrono::system_clock::now();
     std::time_t currentTime_t = std::chrono::system_clock::to_time_t(currentTime);
@@ -48,6 +54,7 @@ int getHour() {
     int hours = currentTime_tm->tm_hour;
     return hours;
 }
+/* This function prints the string character by character with a delay of 10ms. */
 void printIntro(string s) {
     for (const auto c : s) {
         cout << c << flush;
@@ -55,6 +62,10 @@ void printIntro(string s) {
     }
     print("");
 }
+/*
+Function that hides the user input with an asterisks for better security
+and returns the input as a integer.
+*/
 int getPin() {
     string pinLength = "";
     char* p;
@@ -76,24 +87,31 @@ int getPin() {
     } while (pinLength.length() != PINDIGITS);
     return stoi(pinLength);
 }
+/* This function checks if the pin entered by the user matches the correct pin. */
 bool checkPin(int correctPin) {
     int pin = getPin();
     if (pin == correctPin) return true;
     return false;
 }
+/*
+    this function creates a new account and stores the information in a csv file.
+*/
 void createAccount() {
     BankInfo bankInfo;
     bankInfo.name = loopTillNotNull("Please enter your name:");
     bankInfo.address = loopTillNotNull("Please enter your address:");
     bankInfo.phone = getStr("Please enter your phone number:");
+    // checks if the phone number is 11 digits long
     while (bankInfo.phone.length() != 11) {
         print("Invalid phone number. Try again");
         bankInfo.phone = getStr("Please enter your phone number:");
     }
+    // checks if the email contains an @ symbol
     do bankInfo.email = loopTillNotNull("Please enter your email:");
     while (bankInfo.email.find("@") == string::npos);
+    // checks if the account type is either checking or savings
     do {
-        bankInfo.accountType = loopTillNotNull("Please enter your account type:");
+        bankInfo.accountType = loopTillNotNull("Please enter your account type (savings / checking):");
         for (auto& c : bankInfo.accountType) c = tolower(c);
         if (bankInfo.accountType != "checking" && bankInfo.accountType != "savings")
             print("Invalid input. Try again.");
@@ -101,6 +119,7 @@ void createAccount() {
     bankInfo.balance = to_string(getNum("Please enter your initial deposit:"));
     int firstPin;
     bool isCorrect;
+    // checks if the pin matches and loops until the pin matches
     do {
         print("Please set your pin:");
         firstPin = getPin();
@@ -114,25 +133,28 @@ void createAccount() {
         }
         bankInfo.pin = firstPin;
     } while (!isCorrect);
-    // generate a unique random account number
+    // generate a unique random account number and checks if it already exists
     while (true) {
         bankInfo.accountNumber = to_string(rand() % 1000000);
         if (getRow(bankInfo.accountNumber).size() == 0) break;
     }
+    // concatenates the bank info into a string and appends it to the csv file
     string accountInfo = bankInfo.name + SEPERATOR + bankInfo.address + SEPERATOR + bankInfo.phone + SEPERATOR + bankInfo.email + SEPERATOR + bankInfo.accountNumber + SEPERATOR + bankInfo.accountType + SEPERATOR + bankInfo.balance + SEPERATOR + to_string(bankInfo.pin) + "\n";
     bool isSuccess = appendFile(fileName, accountInfo);
     if (!isSuccess)
         print("Account creation failed");
     else
         print("Account creation successful");
+    // adding the account info to the trieMap
     csvData[bankInfo.accountNumber] = {bankInfo.name, bankInfo.address, bankInfo.phone, bankInfo.email, bankInfo.accountNumber, bankInfo.accountType, bankInfo.balance, to_string(bankInfo.pin)};
     printInfo(csvData[bankInfo.accountNumber]);
     pauseProgram();
 }
+// reads the account info from the loaded csv file using the hash map algorithm with a time complexity of O(1)
 void readAccount() {
     string accountNumber = getStr("Please enter your account number:");
+    // checks if the account number exists in the hash map loaded from the csv file
     vector<string> accountInfo = getRow(accountNumber);
-    print(accountInfo.size());
     if (accountInfo.size() == 0) {
         print("Account not found");
         pauseProgram();
@@ -148,6 +170,7 @@ void readAccount() {
         return;
     }
 }
+// updates the account info in both the csv file and the hash map
 void updateAccount() {
     string choice;
     string accountNumber = getStr("Please enter your account number:");
@@ -163,6 +186,7 @@ void updateAccount() {
     print("");
 
     if (!isCorrect) {
+        // loops until the pin matches or the user enters the wrong pin 3 times
         int tries = 0;
         while (tries < 3) {
             print("Invalid pin. Try again");
@@ -184,13 +208,14 @@ void updateAccount() {
     print("[T] Phone");
     print("[A] Address");
     choice = getStr("Your choice:");
+    // loops until the user enters a valid choice
     while (true) {
         if (choice.length() == 0) updateAccount();
         print("Invalid choice. Try again");
         choice = tolower(getStr("Your choice:")[0]);
         if (choice[0] == 'p' || choice[0] == 'e' || choice[0] == 'n' || choice[0] == 't' || choice[0] == 'a') break;
-        print(choice);
     }
+    // updates the account info in the csv file and the hash map
     switch (choice[0]) {
         case 'p': {
             int firstPin, secondPin;
@@ -245,18 +270,19 @@ void updateAccount() {
     };
     pauseProgram();
 }
-bool deleteAccount() {
+// deletes the account info from the csv file and the hash map
+void deleteAccount() {
     string accountNumber = getStr("Please enter your account number:");
     vector<string> accountInfo = getRow(accountNumber);
     if (accountInfo.size() == 0) {
         print("Account not found");
         pauseProgram();
-        return false;
+        return;
     }
     print("Please enter your pin for verification");
     int pin = getPin();
     print("");
-    if (accountInfo[7] != to_string(pin)) return false;
+    if (accountInfo[7] != to_string(pin)) return;
     print("Account found");
     printInfo(accountInfo);
     print("Are you sure you want to delete this account?");
@@ -264,12 +290,12 @@ bool deleteAccount() {
     print("N. No");
     char choice = tolower(getStr("Your choice:")[0]);
     while (choice != 'y' || choice != 'n') choice = tolower(getStr("Your choice:")[0]);
-    if (choice == 'n') return false;
+    if (choice == 'n') return;
     deleteRow(fileName, accountNumber);
     csvData.erase(accountInfo[0]);
     csvData.erase(accountInfo[4]);
     pauseProgram();
-    return true;
+    return;
 }
 
 int main() {
@@ -277,12 +303,13 @@ int main() {
     printIntro("||Welcome to the Bank Management System||");
     printIntro("========================================");
     pauseProgram();
-    vector<int> indexes = {4};
-    init(fileName, csvData, indexes);
-    bool exit = false;
+    vector<int> indexes = {4};         // indexes of the columns that are used for searching and traversing the hash map
+    init(fileName, csvData, indexes);  // loads the csv file into the hash map
+    bool exit = false;                 // flag to exit the program
     while (!exit) {
-        system("cls");
+        system("cls");  // clears the screen for windows
         int hours = getHour();
+        // prints a greeting message based on the time of the day
         if (hours >= 0 && hours < 12)
             printLn("Good Morning!");
         else if (hours >= 12 && hours < 18)
@@ -296,8 +323,8 @@ int main() {
         print("R. Get an existing account");
         print("U. Update an existing account");
         print("D. Delete an existing account");
-        print("W. Withdraw");
-        print("E. Deposit");
+        print("W - Withdraw");
+        print("E - Deposit");
         print("Q. Quit");
         string choice = getStr("Your choice:");
         switch (tolower(choice[0])) {
@@ -314,12 +341,13 @@ int main() {
                 deleteAccount();
                 break;
             case 'w': {
+                // withdraws the amount from the account and updates the csv file and the hash map
                 string accountNumber = getStr("Please enter your account number:");
                 vector<string> accountInfo = getRow(accountNumber);
                 if (accountInfo.size() == 0) {
                     print("Account not found");
                     pauseProgram();
-                    return false;
+                    break;
                 }
                 print("Please enter your pin for verification");
                 int pin = getPin();
@@ -332,7 +360,7 @@ int main() {
                         tries++;
                     }
                     if (tries == 3) print("Too many tries. Try again later");
-                    return false;
+                    break;
                 }
                 int withdraw = getNum("Please enter withdraw amount:");
                 if (stoi(accountInfo[6]) < withdraw) {
@@ -347,6 +375,7 @@ int main() {
                 break;
             }
             case 'e': {
+                // deposits the amount to the account and updates the csv file and the hash map
                 string accountNumber = getStr("Please enter your account number:");
                 vector<string> accountInfo = getRow(accountNumber);
                 if (accountInfo.size() == 0) {
@@ -365,7 +394,7 @@ int main() {
                         tries++;
                     }
                     if (tries == 3) print("Too many tries. Try again later");
-                    return false;
+                    break;
                 }
                 int deposit = getNum("Please enter deposit amount:");
                 updateRow(fileName, accountInfo[0], to_string(stoi(accountInfo[6]) + deposit), 6);
