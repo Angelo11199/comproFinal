@@ -289,9 +289,15 @@ void deleteAccount() {
     print("Y. Yes");
     print("N. No");
     char choice = tolower(getStr("Your choice:")[0]);
-    while (choice != 'y'&& choice != 'n') choice = tolower(getStr("Your choice:")[0]);
+    while (choice != 'y' && choice != 'n') choice = tolower(getStr("Your choice:")[0]);
     if (choice == 'n') return;
-    deleteRow(fileName, accountNumber);
+    bool deleteSuccess = deleteRow(fileName, accountInfo[0]);
+    if (!deleteSuccess) {
+        print("Account deletion failed");
+        pauseProgram();
+        return;
+    }
+
     csvData.erase(accountInfo[0]);
     csvData.erase(accountInfo[4]);
     pauseProgram();
