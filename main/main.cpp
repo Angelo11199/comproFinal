@@ -23,11 +23,11 @@ const string fileName = "bankInfo.csv";  // name of the file
 
 // prints the banking information minus the pin.
 void printInfo(vector<string> bankInfo) {
-    print("Name: " + bankInfo[0]);
-    print("Address: " + bankInfo[1]);
-    print("Phone: " + bankInfo[2]);
-    print("Email: " + bankInfo[3]);
-    print("Account Number: " + bankInfo[4]);
+    print("Name: " + bankInfo[1]);
+    print("Address: " + bankInfo[2]);
+    print("Phone: " + bankInfo[3]);
+    print("Email: " + bankInfo[4]);
+    print("Account Number: " + bankInfo[0]);
     print("Account Type: " + bankInfo[5]);
     print("Balance: " + bankInfo[6]);
 }
@@ -139,14 +139,14 @@ void createAccount() {
         if (getRow(bankInfo.accountNumber).size() == 0) break;
     }
     // concatenates the bank info into a string and appends it to the csv file
-    string accountInfo = bankInfo.name + SEPERATOR + bankInfo.address + SEPERATOR + bankInfo.phone + SEPERATOR + bankInfo.email + SEPERATOR + bankInfo.accountNumber + SEPERATOR + bankInfo.accountType + SEPERATOR + bankInfo.balance + SEPERATOR + to_string(bankInfo.pin) + "\n";
+    string accountInfo = bankInfo.accountNumber + SEPERATOR + bankInfo.name + SEPERATOR + bankInfo.address + SEPERATOR + bankInfo.phone + SEPERATOR + bankInfo.email + SEPERATOR + bankInfo.accountType + SEPERATOR + bankInfo.balance + SEPERATOR + to_string(bankInfo.pin) + "\n";
     bool isSuccess = appendFile(fileName, accountInfo);
     if (!isSuccess)
         print("Account creation failed");
     else
         print("Account creation successful");
     // adding the account info to the trieMap
-    csvData[bankInfo.accountNumber] = {bankInfo.name, bankInfo.address, bankInfo.phone, bankInfo.email, bankInfo.accountNumber, bankInfo.accountType, bankInfo.balance, to_string(bankInfo.pin)};
+    csvData[bankInfo.accountNumber] = {bankInfo.accountNumber, bankInfo.name, bankInfo.address, bankInfo.phone, bankInfo.email, bankInfo.accountType, bankInfo.balance, to_string(bankInfo.pin)};
     printInfo(csvData[bankInfo.accountNumber]);
     pauseProgram();
 }
@@ -229,8 +229,8 @@ void updateAccount() {
                     print("Pin does not match. Try again");
                     continue;
                 }
-                accountInfo[6] = firstPin;
-                updateRow(fileName, accountInfo[0], to_string(firstPin), 6);
+                accountInfo[7] = firstPin;
+                updateRow(fileName, accountInfo[0], to_string(firstPin), 7);
                 csvData[accountInfo[0]] = accountInfo;
             } while (firstPin != secondPin);
             break;
@@ -241,27 +241,27 @@ void updateAccount() {
                 bankInfo.email = loopTillNotNull("Please enter your new email:");
                 if (bankInfo.email.find("@") == string::npos) print("Invalid input. Try again.");
             } while (bankInfo.email.find("@") == string::npos);
-            updateRow(fileName, accountInfo[0], bankInfo.email, 3);
-            accountInfo[3] = bankInfo.email;
+            updateRow(fileName, accountInfo[0], bankInfo.email, 4);
+            accountInfo[4] = bankInfo.email;
             csvData[accountInfo[0]] = accountInfo;
         }
         case 'n': {
             bankInfo.name = loopTillNotNull("Please enter your new name:");
-            updateRow(fileName, accountInfo[0], bankInfo.name, 0);
+            updateRow(fileName, accountInfo[0], bankInfo.name, 1);
             accountInfo[0] = bankInfo.name;
             csvData[accountInfo[0]] = accountInfo;
         } break;
             break;
         case 't':
             bankInfo.phone = loopTillNotNull("Please enter your new phone number:");
-            updateRow(fileName, accountInfo[0], bankInfo.phone, 2);
-            accountInfo[2] = bankInfo.phone;
+            updateRow(fileName, accountInfo[0], bankInfo.phone, 3);
+            accountInfo[3] = bankInfo.phone;
             csvData[accountInfo[0]] = accountInfo;
             break;
         case 'a':
             bankInfo.address = loopTillNotNull("Please enter your new address:");
-            updateRow(fileName, accountInfo[0], bankInfo.address, 1);
-            accountInfo[1] = bankInfo.address;
+            updateRow(fileName, accountInfo[0], bankInfo.address, 2);
+            accountInfo[2] = bankInfo.address;
             csvData[accountInfo[0]] = accountInfo;
             break;
         default:
@@ -297,9 +297,8 @@ void deleteAccount() {
         pauseProgram();
         return;
     }
-
+    print("Account deletion successful");
     csvData.erase(accountInfo[0]);
-    csvData.erase(accountInfo[4]);
     pauseProgram();
     return;
 }
@@ -309,7 +308,7 @@ int main() {
     printIntro("||Welcome to the Bank Management System||");
     printIntro("========================================");
     pauseProgram();
-    vector<int> indexes = {4};         // indexes of the columns that are used for searching and traversing the hash map
+    vector<int> indexes = {0};         // indexes of the columns that are used for searching and traversing the hash map
     init(fileName, csvData, indexes);  // loads the csv file into the hash map
     bool exit = false;                 // flag to exit the program
     while (!exit) {
