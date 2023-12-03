@@ -1,4 +1,5 @@
 #include "../include/snippets.h"
+//to connect the code to the snippet.h so it can use the functions made
 using namespace std;
 #include <conio.h>
 
@@ -7,10 +8,11 @@ using namespace std;
 #include <string>
 #include <thread>
 #include <vector>
-#define PINDIGITS 6
 
+//Declare the start() so it can be later(line 216) use for going back to the main menu of the program   
 void start();
 
+//Menu for deleting a data in the database
 void removestock() {
     system("cls");
     print("---------------------------------");
@@ -24,6 +26,7 @@ void removestock() {
     start();
 }
 
+//Menu for viewing and search specific data or to view all data in the database
 void viewstock() {
     system("cls");
     print("-----------------------------------");
@@ -79,6 +82,7 @@ void viewstock() {
     }
 }
 
+//This code and process to modifying an data in the database
 bool updateProcess(string noun, vector<string> result, int index) {
     string newValue = getStr("Enter New " + noun + ": ");
     bool isSuccess = updateRow("inventory.csv", result[0], newValue, index);
@@ -88,6 +92,7 @@ bool updateProcess(string noun, vector<string> result, int index) {
     return isSuccess;
 }
 
+//Menu that will modify and edit a specific data inside the database
 void updatestock() {
     system("cls");
     bool isSuccess = false;
@@ -105,7 +110,7 @@ void updatestock() {
         start();
         pauseProgram();
     } else {
-        // system("cls");
+        system("cls");
         print("--------------------------------");
         print("PICK THE SUBJECT YOU WANT TO MODIFY");
         print("--------------------------------");
@@ -155,6 +160,7 @@ void updatestock() {
     pauseProgram();
 }
 
+//Menu that will add new data in the database
 void addstock() {
     system("cls");
     print("---------------------------------");
@@ -205,6 +211,7 @@ void addstock() {
     start();
 }
 
+//The main menu of the program
 void start() {
     bool exit = false;
     while (!exit) {
@@ -245,6 +252,7 @@ void start() {
     }
 }
 
+//This is where the database file was initialize
 int main() {
     std::vector<int> indexes = {0, 1};
     init("inventory.csv", csvData, indexes);
