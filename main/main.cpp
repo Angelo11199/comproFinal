@@ -45,7 +45,7 @@ void viewstock() {
             system("cls");
             if (result.empty()) {
                 print("--------------------------------");
-                print("Record not found.");
+                print("Product not found.");
                 print("--------------------------------");
                 pauseProgram();
                 viewstock();
@@ -98,7 +98,7 @@ void updatestock() {
     bool isSuccess = false;
     string newValue;
     print("---------------------------------");
-    print("UPDATING RECORD");
+    print("UPDATING STOCK");
     print("---------------------------------");
     string barcode = getStr("Enter the Bar Code: ");
     vector<string> result = getRow(barcode);
